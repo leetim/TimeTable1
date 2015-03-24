@@ -26,16 +26,77 @@ type
       destructor Destroy(); override;
   end;
 
+  { TRefrenceTableManager }
+
+  TRefrenceTableManager = class(TTableManager)
+    private
+      procedure MakeForm(); override;
+    public
+  end;
+
+  procedure AddTableManager(ATable: TMyTable);
+  procedure AddRefrenceTableManager(ATable: TMyTable);
+  procedure AddAllManagers();
+
+var
+  TableManagers: array of TTableManager;
+
 implementation
+
+procedure AddTableManager(ATable: TMyTable);
+begin
+  SetLength(TableManagers, Length(TableManagers) + 1);
+  TableManagers[High(TableManagers)] := TTableManager.Create(ATable);
+end;
+
+procedure AddRefrenceTableManager(ATable: TMyTable);
+begin
+  SetLength(TableManagers, Length(TableManagers) + 1);
+  TableManagers[High(TableManagers)] := TRefrenceTableManager.Create(ATable);
+end;
+
+procedure AddAllManagers;
+var
+  t: TMyTable;
+begin
+  for t in Tables do
+    If t is TTRefrenceTable then
+      AddRefrenceTableManager(t)
+    else
+      AddTableManager(t);
+end;
+
+{ TRefrenceTableManager }
+
+procedure TRefrenceTableManager.MakeForm();
+begin
+  inherited MakeForm();
+  FForm.DBNavigator.VisibleButtons := [nbFirst, nbLast, nbNext, nbPrior]
+end;
 
 { TTableManager }
 
 procedure TTableManager.MakeForm();
+var
+  i: integer;
+  s: TStringList;
 begin
   Application.CreateForm(TTableForm, FForm);
-  with FForm do begin
+  With FForm do begin
+    OnClose := @OnCloseEvent;
     Caption := FTable.Caption;
-  end;
+    with SQLQuery do begin
+      s := FTable.GetSQLCode();
+      SQL.AddStrings(s);
+      s.Free;
+      Active := True;
+    end;
+    with DBGrid.Columns do
+      for i := 0 to Count - 1 do begin
+        Items[i].Title.Caption := FTable.Fields[i].Caption;
+        Items[i].Width := FTable.Fields[i].Width;
+      end;
+  end;;
 end;
 
 procedure TTableManager.OnClickEvent(Sender: TObject);
@@ -75,6 +136,9 @@ begin
   for f in FFields do
     f.Free;
 end;
+
+initialization
+  AddAllManagers();
 
 end.
 

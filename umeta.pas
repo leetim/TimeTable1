@@ -8,9 +8,11 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Interfaces, Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls;
+  Interfaces, Classes, SysUtils, Menus, Controls, UTable, Forms, uConnectionForm,
+  uconnection, DbCtrls;
 const
   TypeCount = 4;
+//   = ('INTEGER', 'VARCHAR(50)', 'BOOLEAN', 'FLOAT');
 
 type
   TSQLType = (sqlInteger, sqlVarChar, sqlBoolean, sqlFloat);
@@ -31,6 +33,8 @@ type
       property Width: integer read GetWidth;
   end;
 
+  TMyFieldsArray = array of TMyField;
+
   { TMyTable }
 
   TMyTable = class
@@ -50,8 +54,9 @@ type
       property Caption: string read FCaption;
       property IDField: TMyField read GetIDField;
       property NameField: TMyField read GetNameField;
-      function GetSQLCode(): TStringList; virtual;
+      property Fields: TMyFieldsArray read FFields;
       function GetMenuItem(AParent: TControl):TMenuItem; virtual;
+      function GetSQLCode(): TStringList; virtual;
       destructor Destroy; override;
   end;
 
@@ -188,6 +193,7 @@ type
       procedure MakeForm; override;
     public
       constructor Create(ARefrences: TMyTableArray); virtual;
+      property Refrences: TMyTableArray read FRefrences;
       function GetSQLCode(): TStringList; override;
   end;
 
