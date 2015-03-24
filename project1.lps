@@ -13,7 +13,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="30" Y="10"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="187"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -27,7 +27,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="1" Y="65"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="187"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -38,9 +38,9 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="590"/>
-        <CursorPos X="1" Y="599"/>
-        <UsageCount Value="173"/>
+        <TopLine Value="24"/>
+        <CursorPos X="41" Y="698"/>
+        <UsageCount Value="187"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -54,7 +54,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="31" Y="22"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="187"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit3>
@@ -69,7 +69,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="22" Y="23"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="46"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit4>
@@ -78,7 +78,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="918"/>
         <CursorPos X="44" Y="927"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\lcl\menus.pp"/>
@@ -86,7 +86,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="245"/>
         <CursorPos X="3" Y="112"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit6>
       <Unit7>
         <Filename Value="C:\lazarus\lcl\stdctrls.pp"/>
@@ -94,14 +94,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1027"/>
         <CursorPos X="3" Y="1046"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="58"/>
       </Unit7>
       <Unit8>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\classesh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="696"/>
         <CursorPos X="3" Y="716"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="30"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -109,21 +109,21 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1214"/>
         <CursorPos X="3" Y="1229"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit9>
       <Unit10>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\objpash.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="173"/>
         <CursorPos X="23" Y="192"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="56"/>
       </Unit10>
       <Unit11>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\objpas.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="265"/>
         <CursorPos X="9" Y="267"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="55"/>
       </Unit11>
       <Unit12>
         <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
@@ -131,7 +131,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="7"/>
         <CursorPos X="3" Y="49"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="32"/>
       </Unit12>
       <Unit13>
         <Filename Value="C:\lazarus\lcl\grids.pas"/>
@@ -139,7 +139,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="561"/>
         <CursorPos X="3" Y="577"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="29"/>
       </Unit13>
       <Unit14>
         <Filename Value="C:\lazarus\lcl\interfaces\win32\win32wscontrols.pp"/>
@@ -147,14 +147,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="232"/>
         <CursorPos X="37" Y="251"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit14>
       <Unit15>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\stringl.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="633"/>
         <CursorPos X="3" Y="638"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit15>
       <Unit16>
         <Filename Value="uconnectionform.pas"/>
@@ -164,7 +164,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="43" Y="35"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="27"/>
       </Unit16>
       <Unit17>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-db\src\base\db.pas"/>
@@ -172,7 +172,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="239"/>
         <CursorPos X="3" Y="246"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit17>
       <Unit18>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-base\src\custapp.pp"/>
@@ -180,7 +180,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="8"/>
         <CursorPos X="64" Y="24"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit18>
       <Unit19>
         <Filename Value="C:\lazarus\lcl\dbctrls.pp"/>
@@ -188,7 +188,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1166"/>
         <CursorPos X="45" Y="1188"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit19>
       <Unit20>
         <Filename Value="utablemanager.pas"/>
@@ -196,9 +196,9 @@
         <UnitName Value="uTableManager"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="101"/>
+        <TopLine Value="4"/>
         <CursorPos X="72" Y="109"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
       </Unit20>
     </Units>
@@ -208,123 +208,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="umeta.pas"/>
-        <Caret Line="697" Column="61" TopLine="679"/>
+        <Caret Line="662" Column="27" TopLine="647"/>
       </Position1>
       <Position2>
         <Filename Value="umeta.pas"/>
-        <Caret Line="32" Column="35" TopLine="17"/>
+        <Caret Line="266" Column="31" TopLine="260"/>
       </Position2>
       <Position3>
         <Filename Value="umeta.pas"/>
-        <Caret Line="350" Column="27" TopLine="335"/>
+        <Caret Line="697" Column="26" TopLine="679"/>
       </Position3>
       <Position4>
         <Filename Value="umeta.pas"/>
-        <Caret Line="511" Column="27" TopLine="496"/>
+        <Caret Line="689" Column="19" TopLine="682"/>
       </Position4>
       <Position5>
-        <Filename Value="umeta.pas"/>
-        <Caret Line="531" Column="27" TopLine="516"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="34" Column="22" TopLine="7"/>
       </Position5>
       <Position6>
-        <Filename Value="umeta.pas"/>
-        <Caret Line="662" Column="27" TopLine="647"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="37" Column="45" TopLine="11"/>
       </Position6>
       <Position7>
-        <Filename Value="umeta.pas"/>
-        <Caret Line="266" Column="31" TopLine="260"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="38" Column="55" TopLine="26"/>
       </Position7>
       <Position8>
-        <Filename Value="umeta.pas"/>
-        <Caret Line="697" Column="26" TopLine="679"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="39" Column="30" TopLine="22"/>
       </Position8>
       <Position9>
-        <Filename Value="umeta.pas"/>
-        <Caret Line="689" Column="19" TopLine="682"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="66" Column="25" TopLine="49"/>
       </Position9>
       <Position10>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="34" Column="22" TopLine="7"/>
+        <Caret Line="34" Column="38" TopLine="15"/>
       </Position10>
       <Position11>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="37" Column="45" TopLine="11"/>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="56" Column="55" TopLine="31"/>
       </Position11>
       <Position12>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="38" Column="55" TopLine="26"/>
+        <Caret Line="92" Column="35" TopLine="73"/>
       </Position12>
       <Position13>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="39" Column="30" TopLine="22"/>
+        <Caret Line="96" Column="33" TopLine="64"/>
       </Position13>
       <Position14>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="66" Column="25" TopLine="49"/>
+        <Caret Line="88" Column="18" TopLine="69"/>
       </Position14>
       <Position15>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="34" Column="38" TopLine="15"/>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="196" Column="60" TopLine="186"/>
       </Position15>
       <Position16>
-        <Filename Value="umeta.pas"/>
-        <Caret Line="56" Column="55" TopLine="31"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="85" Column="1" TopLine="77"/>
       </Position16>
       <Position17>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="92" Column="35" TopLine="73"/>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="11" Column="32" TopLine="1"/>
       </Position17>
       <Position18>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="96" Column="33" TopLine="64"/>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="51" Column="66" TopLine="24"/>
       </Position18>
       <Position19>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="88" Column="18" TopLine="69"/>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="188" Column="58" TopLine="167"/>
       </Position19>
       <Position20>
         <Filename Value="umeta.pas"/>
-        <Caret Line="196" Column="60" TopLine="186"/>
+        <Caret Line="462" Column="24" TopLine="440"/>
       </Position20>
       <Position21>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="85" Column="1" TopLine="77"/>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="447" Column="36" TopLine="428"/>
       </Position21>
       <Position22>
         <Filename Value="umeta.pas"/>
-        <Caret Line="11" Column="32" TopLine="1"/>
+        <Caret Line="185" Column="42" TopLine="164"/>
       </Position22>
       <Position23>
         <Filename Value="umeta.pas"/>
-        <Caret Line="51" Column="66" TopLine="24"/>
+        <Caret Line="472" Column="5" TopLine="456"/>
       </Position23>
       <Position24>
         <Filename Value="umeta.pas"/>
-        <Caret Line="188" Column="58" TopLine="167"/>
+        <Caret Line="552" Column="1" TopLine="534"/>
       </Position24>
       <Position25>
         <Filename Value="umeta.pas"/>
-        <Caret Line="462" Column="24" TopLine="440"/>
+        <Caret Line="584" Column="1" TopLine="566"/>
       </Position25>
       <Position26>
         <Filename Value="umeta.pas"/>
-        <Caret Line="447" Column="36" TopLine="428"/>
+        <Caret Line="13" Column="3" TopLine="1"/>
       </Position26>
       <Position27>
         <Filename Value="umeta.pas"/>
-        <Caret Line="185" Column="42" TopLine="164"/>
+        <Caret Line="663" Column="36" TopLine="632"/>
       </Position27>
       <Position28>
         <Filename Value="umeta.pas"/>
-        <Caret Line="472" Column="5" TopLine="456"/>
+        <Caret Line="22" Column="52" TopLine="3"/>
       </Position28>
       <Position29>
         <Filename Value="umeta.pas"/>
-        <Caret Line="552" Column="1" TopLine="534"/>
+        <Caret Line="664" Column="30" TopLine="647"/>
       </Position29>
       <Position30>
         <Filename Value="umeta.pas"/>
-        <Caret Line="584" Column="1" TopLine="566"/>
+        <Caret Line="27" Column="68" TopLine="3"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

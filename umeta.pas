@@ -11,10 +11,21 @@ uses
   Interfaces, Classes, SysUtils;
 const
   TypeCount = 4;
+  TablesCount = 9;
+  FieldNameCount = 3;
+  FieldCaptionCount = 14;
 //   = ('INTEGER', 'VARCHAR(50)', 'BOOLEAN', 'FLOAT');
 
 type
   TSQLType = (sqlInteger, sqlVarChar, sqlBoolean, sqlFloat);
+  TTableNames = (tnTeachers, tnSubjects, tnPairs, tnWeekdays, tnGroups,
+    tnClassRooms, tnTeachersSubjects, tnGroupsSubjects, tnLessons);
+  TTableCaption = (tcTeachers, tcSubjects, tcPairs, tcWeekdays, tcGroups,
+    tcClassRooms, tcTeachersSubjects, tcGroupsSubjects, tcLessons);
+  TFieldName = (fnUnknow, fnName, fnNumber);
+  TFieldCaption = (fcUnknow, fcID, fcTeachers, fcSubjects, fcPairs, fcWeekdays,
+    fcGroups, fcClassRooms, fcTeachersID, fcSubjectsID, fcPairsID, fcWeekdaysID,
+    fcGroupsID, fcClassRoomsID);
 
     { TMyField }
 
@@ -260,6 +271,9 @@ type
 
 var
   SQLTypes: array[0..TypeCount - 1] of String;
+  TableNames, TableCaptions: array[0..TablesCount - 1] of String;
+  FieldNames: array[0..FieldNameCount - 1] of String;
+  FieldCaption: array[0..FieldCaptionCount - 1] of String;
   Tables: array of TMyTable;
   TeachersTable, ClassRoomsTable, GroupsTable, SubjectsTable,
     WeekDayTable, PairTable: TMyTable;
@@ -637,11 +651,55 @@ begin
   Tables[High(Tables)] := Result;
 end;
 
-initialization
+procedure InitializationMeta();
+begin
   SQLTypes[Integer(sqlInteger)] := 'INTEGER';
   SQLTypes[Integer(sqlVarChar)] := 'VARCHAR(50)';
   SQLTypes[Integer(sqlBoolean)] := 'BOOLEAN';
   SQLTypes[Integer(sqlFloat)] := 'FLOAT';
+
+  TableNames[Integer(tnClassRooms)] := 'CLASSROOMS';
+  TableNames[Integer(tnGroups)] := 'GROUPS';
+  TableNames[Integer(tnGroupSubjects)] := 'GROUPS_SUBJECTS';
+  TableNames[Integer(tnLessons)] := 'LESSONS';
+  TableNames[Integer(tnPairs)] := 'PAIR';
+  TableNames[Integer(tnSubjects)] := 'SUBJECTS';
+  TableNames[Integer(tnTeachers)] := 'TEACHERS';
+  TableNames[Integer(tnTeachersSubjects)] := 'TEACHERS_SUBJECTS';
+  TableNames[Integer(tnWeekdays)] := 'WEEKDAY';
+
+  TableCaptions[Integer(tcClassRooms)] := 'Аудитории';
+  TableCaptions[Integer(tcGroups)] := 'Группы';
+  TableCaptions[Integer(tcGroupSubjects)] := 'Соотношение Группы-Предметы';
+  TableCaptions[Integer(tcLessons)] := 'Занятия';
+  TableCaptions[Integer(tcPairs)] := 'Пары';
+  TableCaptions[Integer(tcSubjects)] := 'Предметы';
+  TableCaptions[Integer(tcTeachers)] := 'Преподователи';
+  TableCaptions[Integer(tcTeachersSubjects)] := 'Соотношения Группы_Предметы';
+  TableCaptions[Integer(tcWeekdays)] := 'Дни недели';
+
+  FieldCaption[Integer(fcUnknow)] := 'Неизвестно';
+  FieldCaption[Integer(fcID)] := 'ID';
+  FieldCaption[Integer(fcTeachers)] := 'Преподователь';
+  FieldCaption[Integer(fcSubjects)] := 'Предмет';
+  FieldCaption[Integer(fcPairs)] := 'Пара';
+  FieldCaption[Integer(fcWeekdays)] := 'День недели';
+  FieldCaption[Integer(fcGroups)] := 'Группы';
+  FieldCaption[Integer(fcClassRooms)] := 'Аудитория';
+  FieldCaption[Integer(fcTeachersID)] := 'ID Преподователя';
+  FieldCaption[Integer(fcSubjectsID)] := 'ID Предмета';
+  FieldCaption[Integer(fcPairsID)] := 'ID Пары';
+  FieldCaption[Integer(fcWeekdaysID)] := 'ID Дня недели';
+  FieldCaption[Integer(fcGroupsID)] := 'ID Группы';
+  FieldCaption[Integer(fcClassRoomsID)] := 'ID Аудитории';
+
+  FieldNames[Integer(fnUnknow)] := 'UNKNOW';
+  FieldNames[Integer(fnNumber)] := 'NUM';
+  FieldNames[Integer(fnName)] := 'NAME';
+end;
+
+initialization
+  InitializationMeta();
   PairTable := AddTable(TTPairsTable.Create());
   WeekDayTable := AddTable(TTWeekDaysTable .Create());
   GroupsTable := AddTable(TTGroupsTable.Create());

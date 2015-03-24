@@ -18,7 +18,7 @@ type
 
     { TMyField }
 
-    TMyField = class
+    TMyField = class(TPersistent)
     protected
       FName, FCaption: string;
       FFieldType: TSQLType;
@@ -36,7 +36,7 @@ type
 
   { TMyTable }
 
-  TMyTable = class
+  TMyTable = class(TPersistent)
     protected
       FName, FCaption: string;
       FFields: array of TMyField;

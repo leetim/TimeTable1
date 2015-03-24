@@ -550,8 +550,8 @@ object TimeTableForm: TTimeTableForm
     TabOrder = 2
   end
   object MainMenu1: TMainMenu
-    left = 304
-    top = 248
+    left = 336
+    top = 288
     object FileItem: TMenuItem
       Caption = 'Файл'
       object TabelsItem: TMenuItem
