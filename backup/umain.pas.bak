@@ -25,7 +25,6 @@ type
     TabelsItem: TMenuItem;
     ExitItem: TMenuItem;
     procedure AboutItemClick(Sender: TObject);
-    procedure CodeMemoKeyPress(Sender: TObject; var Key: char);
     procedure ExcecuteStatementButtonClick(Sender: TObject);
     procedure ExitItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

@@ -52,7 +52,6 @@ object TimeTableForm: TTimeTableForm
     ParentColor = False
     ParentFont = False
     TabOrder = 1
-    OnKeyPress = CodeMemoKeyPress
     Gutter.Width = 57
     Gutter.MouseActions = <>
     Highlighter = SynSQLSyn1
