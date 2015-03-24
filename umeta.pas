@@ -8,11 +8,9 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Interfaces, Classes, SysUtils, Menus, Controls, UTable, Forms, uConnectionForm,
-  uconnection, DbCtrls;
+  Interfaces, Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls;
 const
   TypeCount = 4;
-//   = ('INTEGER', 'VARCHAR(50)', 'BOOLEAN', 'FLOAT');
 
 type
   TSQLType = (sqlInteger, sqlVarChar, sqlBoolean, sqlFloat);
@@ -43,7 +41,6 @@ type
       FMenuItemLink: TMenuItem;
       procedure OnClickEvent(Sender: TObject);
       procedure OnCloseEvent(Sender: TObject; var CloseAction: TCloseAction);
-      function GetSQLCode(): TStringList; virtual;
       function GetIDField(): TMyField;
       function GetNameField(): TMyField;
       procedure AddField(ANewField: TMyField);
@@ -53,6 +50,7 @@ type
       property Caption: string read FCaption;
       property IDField: TMyField read GetIDField;
       property NameField: TMyField read GetNameField;
+      function GetSQLCode(): TStringList; virtual;
       function GetMenuItem(AParent: TControl):TMenuItem; virtual;
       destructor Destroy; override;
   end;
@@ -187,10 +185,10 @@ type
   TTRefrenceTable = class(TMyTable)
     protected
       FRefrences: TMyTableArray;
-      function GetSQLCode(): TStringList; override;
       procedure MakeForm; override;
     public
       constructor Create(ARefrences: TMyTableArray); virtual;
+      function GetSQLCode(): TStringList; override;
   end;
 
   TTRefrenceTableClass = class of TTRefrenceTable;
