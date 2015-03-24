@@ -8,8 +8,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Interfaces, Classes, SysUtils, Menus, Controls, UTable, Forms, uConnectionForm,
-  uconnection, DbCtrls;
+  Interfaces, Classes, SysUtils;
 const
   TypeCount = 4;
 //   = ('INTEGER', 'VARCHAR(50)', 'BOOLEAN', 'FLOAT');
@@ -19,7 +18,7 @@ type
 
     { TMyField }
 
-    TMyField = class
+    TMyField = class(TPersistent)
     protected
       FName, FCaption: string;
       FFieldType: TSQLType;
@@ -37,25 +36,19 @@ type
 
   { TMyTable }
 
-  TMyTable = class
+  TMyTable = class(TPersistent)
     protected
       FName, FCaption: string;
       FFields: array of TMyField;
-      FForm: TTableForm;
-      FMenuItemLink: TMenuItem;
-      procedure OnClickEvent(Sender: TObject);
-      procedure OnCloseEvent(Sender: TObject; var CloseAction: TCloseAction);
       function GetIDField(): TMyField;
       function GetNameField(): TMyField;
       procedure AddField(ANewField: TMyField);
-      procedure MakeForm(); virtual;
     public
       property Name: string read FName;
       property Caption: string read FCaption;
       property IDField: TMyField read GetIDField;
       property NameField: TMyField read GetNameField;
       property Fields: TMyFieldsArray read FFields;
-      function GetMenuItem(AParent: TControl):TMenuItem; virtual;
       function GetSQLCode(): TStringList; virtual;
       destructor Destroy; override;
   end;
@@ -190,7 +183,6 @@ type
   TTRefrenceTable = class(TMyTable)
     protected
       FRefrences: TMyTableArray;
-      procedure MakeForm; override;
     public
       constructor Create(ARefrences: TMyTableArray); virtual;
       property Refrences: TMyTableArray read FRefrences;
@@ -479,12 +471,6 @@ begin
   end;
 end;
 
-procedure TTRefrenceTable.MakeForm;
-begin
-  inherited MakeForm();
-  FForm.DBNavigator.VisibleButtons := [nbFirst, nbLast, nbNext, nbPrior];
-end;
-
 constructor TTRefrenceTable.Create(ARefrences: TMyTableArray);
 var
   ref: TFIDRefrence;
@@ -564,18 +550,6 @@ end;
 
 { TMyTable }
 
-procedure TMyTable.OnClickEvent(Sender: TObject);
-begin
-  If FForm = nil then MakeForm();
-  (Sender as TMenuItem).Checked := True;
-  FForm.ShowOnTop;
-end;
-
-procedure TMyTable.OnCloseEvent(Sender: TObject; var CloseAction: TCloseAction);
-begin
-  FMenuItemLink.Checked := False;
-end;
-
 function TMyTable.GetSQLCode: TStringList;
 var
   s: string;
@@ -608,16 +582,6 @@ begin
   else Result := nil;
 end;
 
-function TMyTable.GetMenuItem(AParent: TControl): TMenuItem;
-begin
-  Result := TMenuItem.Create(AParent);
-  FMenuItemLink := Result;
-  with Result do begin
-    Caption := FCaption;
-    OnClick := @OnClickEvent;
-  end;
-end;
-
 destructor TMyTable.Destroy;
 var
   f: TMyField;
@@ -631,30 +595,6 @@ procedure TMyTable.AddField(ANewField: TMyField);
 begin
   SetLength(FFields, Length(FFields) + 1);
   FFields[High(FFields)] := ANewField;
-end;
-
-procedure TMyTable.MakeForm();
-var
-  i: integer;
-  s: TStringList;
-begin
-  Application.CreateForm(TTableForm, FForm);
-  FForm.ShowOnTop;
-  With FForm do begin
-    OnClose := @OnCloseEvent;
-    Caption := FCaption;
-    with SQLQuery do begin
-      s := Self.GetSQLCode();
-      SQL.AddStrings(s);
-      s.Free;
-      Active := True;
-    end;
-    with DBGrid.Columns do
-      for i := 0 to Count - 1 do begin
-        Items[i].Title.Caption := FFields[i].Caption;
-        Items[i].Width := FFields[i].Width;
-      end;
-  end;
 end;
 
 { TFName }
