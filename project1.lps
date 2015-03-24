@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="20">
+      <Unit0>
+        <Filename Value="project1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="project1"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="33" Y="16"/>
+        <UsageCount Value="172"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="umain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TimeTableForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UMain"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="43"/>
+        <CursorPos X="47" Y="12"/>
+        <UsageCount Value="172"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="umeta.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UMeta"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="682"/>
+        <CursorPos X="31" Y="697"/>
+        <UsageCount Value="172"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="utable.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TableForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UTable"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="31" Y="22"/>
+        <UsageCount Value="172"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="uconnection.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ConnectionModule"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="uconnection"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="22" Y="23"/>
+        <UsageCount Value="31"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="918"/>
+        <CursorPos X="44" Y="927"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\lazarus\lcl\menus.pp"/>
+        <UnitName Value="Menus"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="245"/>
+        <CursorPos X="3" Y="112"/>
+        <UsageCount Value="8"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\lazarus\lcl\stdctrls.pp"/>
+        <UnitName Value="StdCtrls"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1027"/>
+        <CursorPos X="3" Y="1046"/>
+        <UsageCount Value="60"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\classesh.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="635"/>
+        <CursorPos X="15" Y="654"/>
+        <UsageCount Value="32"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\lazarus\lcl\forms.pp"/>
+        <UnitName Value="Forms"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1214"/>
+        <CursorPos X="3" Y="1229"/>
+        <UsageCount Value="11"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\objpash.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="173"/>
+        <CursorPos X="23" Y="192"/>
+        <UsageCount Value="58"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\objpas.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="265"/>
+        <CursorPos X="9" Y="267"/>
+        <UsageCount Value="57"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
+        <UnitName Value="DBGrids"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="3" Y="49"/>
+        <UsageCount Value="34"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="C:\lazarus\lcl\grids.pas"/>
+        <UnitName Value="Grids"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="561"/>
+        <CursorPos X="3" Y="577"/>
+        <UsageCount Value="31"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="C:\lazarus\lcl\interfaces\win32\win32wscontrols.pp"/>
+        <UnitName Value="Win32WSControls"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="232"/>
+        <CursorPos X="37" Y="251"/>
+        <UsageCount Value="9"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\stringl.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="633"/>
+        <CursorPos X="3" Y="638"/>
+        <UsageCount Value="6"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="uconnectionform.pas"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uConnectionForm"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="43" Y="35"/>
+        <UsageCount Value="29"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-db\src\base\db.pas"/>
+        <UnitName Value="db"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="239"/>
+        <CursorPos X="3" Y="246"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-base\src\custapp.pp"/>
+        <UnitName Value="CustApp"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="8"/>
+        <CursorPos X="64" Y="24"/>
+        <UsageCount Value="11"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="C:\lazarus\lcl\dbctrls.pp"/>
+        <UnitName Value="DbCtrls"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1166"/>
+        <CursorPos X="45" Y="1188"/>
+        <UsageCount Value="11"/>
+      </Unit19>
+    </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="0"/>
+    </General>
+    <JumpHistory Count="28" HistoryIndex="27">
+      <Position1>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="42" Column="21" TopLine="17"/>
+      </Position1>
+      <Position2>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="43" Column="23" TopLine="23"/>
+      </Position2>
+      <Position3>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="49" Column="18" TopLine="24"/>
+      </Position3>
+      <Position4>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="50" Column="24" TopLine="30"/>
+      </Position4>
+      <Position5>
+        <Filename Value="umain.pas"/>
+        <Caret Line="30" Column="31" TopLine="20"/>
+      </Position5>
+      <Position6>
+        <Filename Value="umain.pas"/>
+        <Caret Line="63" Column="13" TopLine="42"/>
+      </Position6>
+      <Position7>
+        <Filename Value="umain.pas"/>
+        <Caret Line="64" Column="31" TopLine="43"/>
+      </Position7>
+      <Position8>
+        <Filename Value="umain.pas"/>
+        <Caret Line="71" Column="23" TopLine="48"/>
+      </Position8>
+      <Position9>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="186" Column="36" TopLine="171"/>
+      </Position9>
+      <Position10>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="475" Column="35" TopLine="460"/>
+      </Position10>
+      <Position11>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="475" Column="66" TopLine="460"/>
+      </Position11>
+      <Position12>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="475" Column="26" TopLine="460"/>
+      </Position12>
+      <Position13>
+        <Filename Value="umain.pas"/>
+        <Caret Line="57" Column="12" TopLine="53"/>
+      </Position13>
+      <Position14>
+        <Filename Value="umain.pas"/>
+        <Caret Line="88" Column="1" TopLine="67"/>
+      </Position14>
+      <Position15>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="18" Column="10" TopLine="18"/>
+      </Position15>
+      <Position16>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="26" Column="12" TopLine="3"/>
+      </Position16>
+      <Position17>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="14" Column="60" TopLine="1"/>
+      </Position17>
+      <Position18>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="697" Column="17" TopLine="678"/>
+      </Position18>
+      <Position19>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="14" Column="54" TopLine="1"/>
+      </Position19>
+      <Position20>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="697" Column="61" TopLine="679"/>
+      </Position20>
+      <Position21>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="32" Column="35" TopLine="17"/>
+      </Position21>
+      <Position22>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="350" Column="27" TopLine="335"/>
+      </Position22>
+      <Position23>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="511" Column="27" TopLine="496"/>
+      </Position23>
+      <Position24>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="531" Column="27" TopLine="516"/>
+      </Position24>
+      <Position25>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="662" Column="27" TopLine="647"/>
+      </Position25>
+      <Position26>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="266" Column="31" TopLine="260"/>
+      </Position26>
+      <Position27>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="697" Column="26" TopLine="679"/>
+      </Position27>
+      <Position28>
+        <Filename Value="umeta.pas"/>
+        <Caret Line="689" Column="19" TopLine="682"/>
+      </Position28>
+    </JumpHistory>
+  </ProjectSession>
+  <EditorMacros Count="0"/>
+</CONFIG>

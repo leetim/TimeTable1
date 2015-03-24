@@ -1,0 +1,74 @@
+object TableForm: TTableForm
+  Left = 589
+  Height = 524
+  Top = 87
+  Width = 642
+  Caption = 'Запрос'
+  ClientHeight = 524
+  ClientWidth = 642
+  Constraints.MinHeight = 400
+  Constraints.MinWidth = 500
+  LCLVersion = '1.2.4.0'
+  object DBGrid: TDBGrid
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = DBNavigator
+    Left = 5
+    Height = 448
+    Top = 5
+    Width = 632
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    BorderSpacing.Right = 5
+    BorderSpacing.Bottom = 5
+    Color = clWindow
+    Columns = <>
+    DataSource = DataSource
+    TabOrder = 0
+  end
+  object DBNavigator: TDBNavigator
+    AnchorSideLeft.Control = Owner
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 5
+    Height = 61
+    Top = 458
+    Width = 478
+    Anchors = [akLeft, akBottom]
+    BevelOuter = bvNone
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 5
+    BorderSpacing.Bottom = 5
+    ChildSizing.EnlargeHorizontal = crsScaleChilds
+    ChildSizing.EnlargeVertical = crsScaleChilds
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 100
+    ClientHeight = 61
+    ClientWidth = 478
+    DataSource = DataSource
+    Options = []
+    TabOrder = 1
+  end
+  object SQLQuery: TSQLQuery
+    FieldDefs = <>
+    Database = ConnectionModule.ConnectionComponent
+    Transaction = TimeTableForm.SQLTransaction
+    DeleteSQL.Strings = (
+      'SELECT *'
+      'FROM TEACHERS;'
+    )
+    Params = <>
+    left = 555
+    top = 352
+  end
+  object DataSource: TDataSource
+    DataSet = SQLQuery
+    left = 505
+    top = 350
+  end
+end

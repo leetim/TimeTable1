@@ -1,0 +1,66 @@
+object Form1: TForm1
+  Left = 62
+  Height = 138
+  Top = 25
+  Width = 316
+  Caption = 'Form1'
+  Menu = MainMenu1
+  OnCreate = FormCreate
+  LCLVersion = '1.2.4.0'
+  object IBConnection1: TIBConnection
+    Connected = True
+    LoginPrompt = False
+    DatabaseName = 'C:\DB\PUPILS.FDB'
+    KeepConnection = False
+    Password = 'masterkey'
+    Transaction = SQLTransaction1
+    UserName = 'SYSDBA'
+    LogEvents = []
+    left = 95
+    top = 15
+  end
+  object DataSource1: TDataSource
+    DataSet = SQLQuery1
+    left = 150
+    top = 15
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <>
+    Database = IBConnection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'SELECT s.NAME, s.AGE, g.NAME as GROUP_NAME'
+      'FROM STUDENTS s'
+      'INNER JOIN GROUPS g'
+      'ON g.ID = s.GROUP_ID;'
+    )
+    Params = <>
+    left = 200
+    top = 15
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = True
+    Database = IBConnection1
+    left = 50
+    top = 15
+  end
+  object MainMenu1: TMainMenu
+    left = 10
+    top = 15
+    object FileItem: TMenuItem
+      Caption = 'Файл'
+      object MenuItem3: TMenuItem
+        Caption = 'New Item3'
+        object MenuItem4: TMenuItem
+          Caption = 'New Item4'
+        end
+      end
+      object ExitItem: TMenuItem
+        Caption = 'Выход'
+      end
+    end
+    object AboutItem: TMenuItem
+      Caption = 'О программе'
+    end
+  end
+end
