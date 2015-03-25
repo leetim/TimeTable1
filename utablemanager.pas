@@ -19,8 +19,9 @@ type
       procedure MakeForm(); virtual;
       procedure OnClickEvent(Sender: TObject);
       procedure OnCloseEvent(Sender: TObject; var CloseAction: TCloseAction);
+      function GetSQLCode(): string; virtual;
     public
-      constructor Create(ATable: TMyTable);
+      constructor Create(ATable: TMyTable); virtual;
       function GetMenuItem(AParent: TControl): TMenuItem;
   end;
 
@@ -28,8 +29,11 @@ type
 
   TRefrenceTableManager = class(TTableManager)
     private
+      FRefrences: TMyTableArray;
       procedure MakeForm(); override;
+      function GetSQLCode: string; override;
     public
+      constructor Create(ATable: TMyTable); override;
   end;
 
   procedure AddTableManager(ATable: TMyTable);
@@ -66,10 +70,62 @@ end;
 
 { TRefrenceTableManager }
 
-procedure TRefrenceTableManager.MakeForm();
+procedure TRefrenceTableManager.MakeForm();var
+  i: integer;
+  s: String;
 begin
-  inherited MakeForm();
+  Application.CreateForm(TTableForm, FForm);
+ // AddFields(FForm.SQLQuery);
+  With FForm do begin
+    OnClose := @OnCloseEvent;
+    Caption := FTable.Caption;
+    with SQLQuery do begin
+      SQL.Add(GetSQLCode());
+      Active := True;
+    end;
+    with DBGrid.Columns do
+      for i := 0 to Count - 1 do begin
+        Items[i].Title.Caption :=
+          (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Caption;
+        Items[i].Width :=
+          (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Width;
+      end;
+  end;
+//begin
+  //inherited MakeForm();
   FForm.DBNavigator.VisibleButtons := [nbFirst, nbLast, nbNext, nbPrior]
+end;
+
+function TRefrenceTableManager.GetSQLCode: string;
+var
+  i: integer;
+begin
+  Result := 'SELECT ';
+  with FTable do begin
+    for i := 0 to MaxIndex do begin
+      Result += FRefrences[i].Name + '.' + FRefrences[i].Fields[MaxIndex].Name;
+      if i <> MaxIndex then
+        Result += ', ';
+    end;
+    Result += 'FROM ' + Name;
+    for i := 0 to High(FRefrences) do begin
+      Result += 'INNER JOIN ' + FRefrences[i].Name;
+      Result += 'ON ' + FRefrences[i].Name + '.' + FRefrences[i].Fields[0].Name +
+        ' = ' + Name + '.' + Fields[i].Name;
+    end;
+  end;
+end;
+
+constructor TRefrenceTableManager.Create(ATable: TMyTable);
+var
+  i: integer;
+begin
+  inherited Create(ATable);
+  with ATable do begin
+    SetLength(FRefrences, MaxIndex + 1);
+    for i := 0 to MaxIndex do
+      FRefrences[i] := (Fields[i] as TFIDRefrence).RefrenceTable;
+  end;
 end;
 
 { TTableManager }
@@ -85,8 +141,7 @@ begin
     OnClose := @OnCloseEvent;
     Caption := FTable.Caption;
     with SQLQuery do begin
-      s := 'SELECT * FROM ' + FTable.Name;
-      SQL.Add(s);
+      SQL.Add(GetSQLCode());
       Active := True;
     end;
     with DBGrid.Columns do
@@ -108,6 +163,11 @@ procedure TTableManager.OnCloseEvent(Sender: TObject;
   var CloseAction: TCloseAction);
 begin
   FMenuItemLink.Checked := False;
+end;
+
+function TTableManager.GetSQLCode(): string;
+begin
+  Result := 'SELECT * FROM ' + FTable.Name;
 end;
 
 constructor TTableManager.Create(ATable: TMyTable);

@@ -63,6 +63,7 @@ type
       FCaption: TTableCaptions;
       FFields: TMyFieldsArray;
       procedure AddField(AField: TMyField);
+      function GetMaxIndex(): integer;
       function GetName(): string; virtual;
       function GetCaption(): string; virtual;
       procedure Initializate(); virtual; abstract;
@@ -70,7 +71,8 @@ type
       constructor Create();
       property Name: string read GetName;
       property Caption: string read GetCaption;
-      property Field: TMyFieldsArray read FFields;
+      property Fields: TMyFieldsArray read FFields;
+      property MaxIndex: integer read GetMaxIndex;
       function GetSQLCode(): TStringList; virtual;
   end;
 
@@ -113,6 +115,10 @@ type
   TFIDRefrence = class(TFID)
     private
       FRefrenceTableName: TTableNames;
+      FRefrenceTable: TMyTable;
+      procedure MakeRefrence(ATable: TMyTable);
+    public
+      property RefrenceTable: TMyTable read FRefrenceTable;
   end;
 
   { TFTeacherName }
@@ -288,6 +294,13 @@ var
 
 implementation
 
+{ TFIDRefrence }
+
+procedure TFIDRefrence.MakeRefrence(ATable: TMyTable);
+begin
+  FRefrenceTable := ATable;
+end;
+
 { TMetaLibrary }
 
 procedure TMetaLibrary.AddTable(t: TMyTable);
@@ -318,6 +331,18 @@ begin
   AddField(TFClassRoomID.Create());
   AddField(TFTeacherID.Create());
 
+  AddTable(TTTeachersTable .Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfTeacherName)]);
+  end;
+
+  AddTable(TTSubjectsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfSubjectName)]);
+  end;
+
   AddTable(TTPairsTable.Create());
   With FMyTables[High(FMyTables)] do begin
     AddField(FMyFields[Integer(lfID)]);
@@ -336,32 +361,16 @@ begin
     AddField(FMyFields[Integer(lfGroupName)]);
   end;
 
-  AddTable(TTSubjectsTable.Create());
-  With FMyTables[High(FMyTables)] do begin
-    AddField(FMyFields[Integer(lfID)]);
-    AddField(FMyFields[Integer(lfSubjectName)]);
-  end;
-
   AddTable(TTClassRoomsTable.Create());
   With FMyTables[High(FMyTables)] do begin
     AddField(FMyFields[Integer(lfID)]);
     AddField(FMyFields[Integer(lfClassRoomName)]);
   end;
 
-  AddTable(TTTeachersTable .Create());
+  AddTable(TTSubjectsTeachersTable.Create());
   With FMyTables[High(FMyTables)] do begin
-    AddField(FMyFields[Integer(lfID)]);
-    AddField(FMyFields[Integer(lfTeacherName)]);
-  end;
-
-  AddTable(TTLessonsTable.Create());
-  With FMyTables[High(FMyTables)] do begin
-    AddField(FMyFields[Integer(lfPairID)]);
-    AddField(FMyFields[Integer(lfWeekDayID)]);
-    AddField(FMyFields[Integer(lfGroupID)]);
-    AddField(FMyFields[Integer(lfSubjectID)]);
-    AddField(FMyFields[Integer(lfClassRoomID)]);
     AddField(FMyFields[Integer(lfTeacherID)]);
+    AddField(FMyFields[Integer(lfSubjectID)]);
   end;
 
   AddTable(TTSubjectsGroupsTable.Create());
@@ -370,10 +379,26 @@ begin
     AddField(FMyFields[Integer(lfSubjectID)]);
   end;
 
-  AddTable(TTSubjectsTeachersTable.Create());
+  AddTable(TTLessonsTable.Create());
   With FMyTables[High(FMyTables)] do begin
-    AddField(FMyFields[Integer(lfTeacherID)]);
+    AddField(FMyFields[Integer(lfPairID)]);
+    (FMyFields[Integer(lfPairID)] as TFIDRefrence).
+      MakeRefrence(FMyTables[tnPairs]);
+    AddField(FMyFields[Integer(lfWeekDayID)]);
+    (FMyFields[Integer(lfWeekDayID)] as TFIDRefrence).
+      MakeRefrence(FMyTables[tnWeekdays]);
+    AddField(FMyFields[Integer(lfGroupID)]);
+    (FMyFields[Integer(lfGroupID)] as TFIDRefrence).
+      MakeRefrence(FMyTables[tnGroups]);
     AddField(FMyFields[Integer(lfSubjectID)]);
+    (FMyFields[Integer(lfSubjectID)] as TFIDRefrence).
+      MakeRefrence(FMyTables[tnSubjects]);
+    AddField(FMyFields[Integer(lfClassRoomID)]);
+    (FMyFields[Integer(lfClassRoomID)] as TFIDRefrence).
+      MakeRefrence(FMyTables[tnClassRooms]);
+    AddField(FMyFields[Integer(lfTeacherID)]);
+    (FMyFields[Integer(lfTeacherID)] as TFIDRefrence).
+      MakeRefrence(FMyTables[tneachers]);
   end;
 end;
 
@@ -683,6 +708,11 @@ procedure TMyTable.AddField(AField: TMyField);
 begin
   SetLength(FFields, Length(FFields) + 1);
   FFields[High(FFields)] := AField;
+end;
+
+function TMyTable.GetMaxIndex(): integer;
+begin
+  Result := High(FFields);
 end;
 
 function TMyTable.GetName: string;
