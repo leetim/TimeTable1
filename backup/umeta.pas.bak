@@ -11,172 +11,193 @@ uses
   Interfaces, Classes, SysUtils;
 const
   TypeCount = 4;
+  TablesCount = 9;
+  FieldNameCount = 10;
+  FieldCaptionCount = 14;
 //   = ('INTEGER', 'VARCHAR(50)', 'BOOLEAN', 'FLOAT');
 
 type
   TSQLType = (sqlInteger, sqlVarChar, sqlBoolean, sqlFloat);
+  TTableNames = (tnTeachers, tnSubjects, tnPairs, tnWeekdays, tnGroups,
+    tnClassRooms, tnTeachersSubjects, tnGroupsSubjects, tnLessons);
+  TTableCaptions = (tcTeachers, tcSubjects, tcPairs, tcWeekdays, tcGroups,
+    tcClassRooms, tcTeachersSubjects, tcGroupsSubjects, tcLessons);
+  TFieldName = (fnUnknow, fnID, fnName, fnNumber, fnTeachersID, fnSubjectsID,
+    fnPairsID, fnWeekdaysID, fnGroupsID, fnClassRoomsID);
+  TFieldCaption = (fcUnknow, fcID, fcTeachers, fcSubjects, fcPairs, fcWeekdays,
+    fcGroups, fcClassRooms, fcTeachersID, fcSubjectsID, fcPairsID, fcWeekdaysID,
+    fcGroupsID, fcClassRoomsID);
+  TLibraryField = (lfID, lfPairNumber, lfWeekdayName, lfGroupName, lfSubjectName,
+    lfClassRoomName, lfTeacherName, lfPairID, lfWeekDayID, lfGroupID,
+    lfSubjectID, lfClassRoomID, lfTeacherID );
 
     { TMyField }
 
     TMyField = class(TPersistent)
-    protected
-      FName, FCaption: string;
+    private
+      FName: TFieldName;
+      FCaption: TFieldCaption;
       FFieldType: TSQLType;
       FWidth: integer;
+      FParentName: TTableNames;
+      function GetName(): string; virtual;
       function GetCaption(): string; virtual;
       function GetWidth(): integer; virtual;
+      procedure Initializate(); virtual; abstract;
     public
-      property Name: string read FName;
+      constructor Create();
+      property Name: string read GetName;
       property Caption: string read GetCaption;
       property FieldType: TSQLType read FFieldType;
       property Width: integer read GetWidth;
   end;
 
   TMyFieldsArray = array of TMyField;
+  TMyFieldClass = class of TMyField;
 
   { TMyTable }
 
   TMyTable = class(TPersistent)
-    protected
-      FName, FCaption: string;
-      FFields: array of TMyField;
-      function GetIDField(): TMyField;
-      function GetNameField(): TMyField;
-      procedure AddField(ANewField: TMyField);
+    private
+      FName: TTableNames;
+      FCaption: TTableCaptions;
+      FFields: TMyFieldsArray;
+      procedure AddField(AField: TMyField);
+      function GetName(): string; virtual;
+      function GetCaption(): string; virtual;
+      procedure Initializate(); virtual; abstract;
     public
-      property Name: string read FName;
-      property Caption: string read FCaption;
-      property IDField: TMyField read GetIDField;
-      property NameField: TMyField read GetNameField;
-      property Fields: TMyFieldsArray read FFields;
+      constructor Create();
+      property Name: string read GetName;
+      property Caption: string read GetCaption;
+      property Field: TMyFieldsArray read FFields;
       function GetSQLCode(): TStringList; virtual;
-      destructor Destroy; override;
+  end;
+
+  TMyTableClass = class of TMyTable;
+  TMyTableArray = array of TMyTable;
+
+  { TMetaLibrary }
+
+  TMetaLibrary = class
+    private
+      FMyTables: TMyTableArray;
+      FMyFields: TMyFieldsArray;
+      procedure AddTable(t: TMyTable);
+      procedure AddField(f: TMyField);
+    public
+      constructor Create();
+      function SearchField(ASearchString: string): TMyField;
+      function SearchTable(ASearchString: string): TMyTable;
+      property Tables: TMyTableArray read FMyTables;
+      property Fields: TMyFieldsArray read FMyFields;
+      destructor Destroy();
+  end;
+
+  { TFUnknow }
+
+  TFUnknow = class(TMyField)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFID }
 
-  TFID = class(TMyField)
-    protected
-      FParentTable: TMyTable;
-    public
-      constructor Create(AParentTable: TMyTable); virtual;
-      property ParentTable: TMyTable read FParentTable;
+  TFID = class(TFUnknow)
+    private
+      procedure Initializate; override;
   end;
 
   { TFIDRefrence }
 
   TFIDRefrence = class(TFID)
-    protected
-      FRefrenceTable: TMyTable;
-      function GetCaption(): string; override;
-      function GetWidth(): integer; override;
-    public
-      property RefrenceTable: TMyTable read FRefrenceTable write FRefrenceTable;
-      property Caption;
-      constructor Create(AParentTable: TMyTable); override;
-  end;
-
-  { TFName }
-
-  TFName = class(TMyField)
-    protected
-      FParentTable: TMyTable;
-    public
-      constructor Create(AParentTable: TMyTable); virtual;
+    private
+      FRefrenceTableName: TTableNames;
   end;
 
   { TFTeacherName }
 
-  TFTeacherName = class(TFName)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+  TFTeacherName = class(TFUnknow)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFSubjectName }
 
-  TFSubjectName = class(TFName)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+  TFSubjectName = class(TFUnknow)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFGroupName }
 
-  TFGroupName = class(TFName)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+  TFGroupName = class(TFUnknow)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFClassRoomName }
 
-  TFClassRoomName = class(TFName)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+  TFClassRoomName = class(TFUnknow)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFWeekdayName }
 
-  TFWeekdayName = class(TFName)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+  TFWeekdayName = class(TFUnknow)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFPairNumber }
 
-  TFPairNumber = class(TFName)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+  TFPairNumber = class(TFUnknow)
+    private
+      procedure Initializate(); override;
   end;
 
   { TFGroupID }
 
   TFGroupID = class(TFIDRefrence)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TFSubjectID }
 
   TFSubjectID = class(TFIDRefrence)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TFTeacherID }
 
   TFTeacherID = class(TFIDRefrence)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TFPairID }
 
   TFPairID = class(TFIDRefrence)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TFWeekDayID }
 
   TFWeekDayID = class(TFIDRefrence)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TFClassRoomID }
 
   TFClassRoomID = class(TFIDRefrence)
-    public
-      constructor Create(AParentTable: TMyTable); override;
+    private
+      procedure Initializate(); override;
   end;
-
-  { TTNameTable }
-
-  TTNameTable = class(TMyTable)
-    public
-      constructor Create(); virtual;
-  end;
-
-  TMyTableArray = array of TMyTable;
 
   { TTRefrenceTable }
 
@@ -184,7 +205,6 @@ type
     protected
       FRefrences: TMyTableArray;
     public
-      constructor Create(ARefrences: TMyTableArray); virtual;
       property Refrences: TMyTableArray read FRefrences;
       function GetSQLCode(): TStringList; override;
   end;
@@ -194,77 +214,204 @@ type
   { TTLessonsTable }
 
   TTLessonsTable = class(TTRefrenceTable)
-    public
-      constructor Create(ARefrences: TMyTableArray); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TTSubjectsTeachersTable }
 
   TTSubjectsTeachersTable = class(TTRefrenceTable)
-    public
-      constructor Create(ARefrences: TMyTableArray); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TTSubjectsGroupsTable }
 
   TTSubjectsGroupsTable = class(TTRefrenceTable)
-    public
-      constructor Create(ARefrences: TMyTableArray); override;
+    private
+      procedure Initializate(); override;
   end;
 
   { TTTeachersTable }
 
-  TTTeachersTable = class(TTNameTable)
-    public
-      constructor Create(); override;
+  TTTeachersTable = class(TMyTable)
+    private
+      procedure Initializate(); override;
   end;
 
   { TTSubjectsTable }
 
-  TTSubjectsTable = class(TTNameTable)
-    public
-      constructor Create(); override;
+  TTSubjectsTable = class(TMyTable)
+    private
+      procedure Initializate(); override;
   end;
 
   { TTGroupsTable }
 
-  TTGroupsTable = class(TTNameTable)
-    public
-      constructor Create(); override;
+  TTGroupsTable = class(TMyTable)
+    private
+      procedure Initializate(); override;
   end;
 
   { TTPairsTable }
 
-  TTPairsTable = class(TTNameTable)
-    public
-      constructor Create(); override;
+  TTPairsTable = class(TMyTable)
+    private
+      procedure Initializate(); override;
   end;
 
   { TTWeekDaysTable }
 
-  TTWeekDaysTable = class(TTNameTable)
-    public
-      constructor Create(); override;
+  TTWeekDaysTable = class(TMyTable)
+    private
+      procedure Initializate(); override;
   end;
 
   { TTClassRoomsTable }
 
-  TTClassRoomsTable = class(TTNameTable)
-    public
-      constructor Create(); override;
+  TTClassRoomsTable = class(TMyTable)
+    private
+      procedure Initializate(); override;
   end;
 
   function AddTable(t: TMyTable): TMyTable;
-  function AddTableFromClass(t: TTRefrenceTableClass;
-    ARefrence1, ARefrence2: TMyTable): TMyTable;
+  function AddField(f: TMyField): TMyField;
 
 var
   SQLTypes: array[0..TypeCount - 1] of String;
-  Tables: array of TMyTable;
-  TeachersTable, ClassRoomsTable, GroupsTable, SubjectsTable,
-    WeekDayTable, PairTable: TMyTable;
+  TableNames, TableCaptions: array[0..TablesCount - 1] of String;
+  FieldNames: array[0..FieldNameCount - 1] of String;
+  FieldCaption: array[0..FieldCaptionCount - 1] of String;
+  MyTables: array of TMyTable;
+  MyFields: array of TMyField;
+  MetaLibrary: TMetaLibrary;
 
 implementation
+
+{ TMetaLibrary }
+
+procedure TMetaLibrary.AddTable(t: TMyTable);
+begin
+  SetLength(FMyTables, Length(FMyTables) + 1);
+  FMyTables[High(FMyTables)] := t;
+end;
+
+procedure TMetaLibrary.AddField(f: TMyField);
+begin
+  SetLength(FMyFields, Length(FMyFields) + 1);
+  FMyFields[High(FMyFields)] := f;
+end;
+
+constructor TMetaLibrary.Create;
+begin
+  AddField(TFID.Create());
+  AddField(TFPairNumber.Create());
+  AddField(TFWeekdayName.Create());
+  AddField(TFGroupName.Create());
+  AddField(TFSubjectName.Create());
+  AddField(TFClassRoomName.Create());
+  AddField(TFTeacherName.Create());
+  AddField(TFPairID.Create());
+  AddField(TFWeekDayID.Create());
+  AddField(TFGroupID.Create());
+  AddField(TFSubjectID.Create());
+  AddField(TFClassRoomID.Create());
+  AddField(TFTeacherID.Create());
+
+  AddTable(TTPairsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfPairNumber)]);
+  end;
+
+  AddTable(TTWeekDaysTable .Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfWeekdayName)]);
+  end;
+
+  AddTable(TTGroupsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfGroupName)]);
+  end;
+
+  AddTable(TTSubjectsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfSubjectName)]);
+  end;
+
+  AddTable(TTClassRoomsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfClassRoomName)]);
+  end;
+
+  AddTable(TTTeachersTable .Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfID)]);
+    AddField(FMyFields[Integer(lfTeacherName)]);
+  end;
+
+  AddTable(TTLessonsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfPairID)]);
+    AddField(FMyFields[Integer(lfWeekDayID)]);
+    AddField(FMyFields[Integer(lfGroupID)]);
+    AddField(FMyFields[Integer(lfSubjectID)]);
+    AddField(FMyFields[Integer(lfClassRoomID)]);
+    AddField(FMyFields[Integer(lfTeacherID)]);
+  end;
+
+  AddTable(TTSubjectsGroupsTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfGroupID)]);
+    AddField(FMyFields[Integer(lfSubjectID)]);
+  end;
+
+  AddTable(TTSubjectsTeachersTable.Create());
+  With FMyTables[High(FMyTables)] do begin
+    AddField(FMyFields[Integer(lfTeacherID)]);
+    AddField(FMyFields[Integer(lfSubjectID)]);
+  end;
+end;
+
+function TMetaLibrary.SearchField(ASearchString: string): TMyField;
+var
+  f: TMyField;
+  i: integer;
+  s: string;
+begin
+  Delete(ASearchString, Length(ASearchString), 1);
+  for f in FMyFields do begin
+    s := f.Name;
+    If s = ASearchString then
+      Exit(f);
+  end;
+  Result := nil;
+end;
+
+function TMetaLibrary.SearchTable(ASearchString: string): TMyTable;
+var
+  t: TMyTable;
+begin
+  for t in FMyTables do
+    If t.Name = ASearchString then
+      Exit(t);
+  Result := nil;
+end;
+
+destructor TMetaLibrary.Destroy;
+var
+  f: TMyField;
+  t: TMyTable;
+begin
+  for f in FMyFields do
+    f.Free;
+  for t in FMyTables do
+    t.Free;
+end;
 
 { TMyField }
 
@@ -273,174 +420,152 @@ begin
   Result := FWidth;
 end;
 
+constructor TMyField.Create;
+begin
+  Initializate();
+end;
+
+function TMyField.GetName: string;
+begin
+  Result := FieldNames[Integer(FName)];
+end;
+
 function TMyField.GetCaption: string;
 begin
-  Result := FCaption;
+  Result := FieldCaption[Integer(FCaption)];
 end;
 
 { TFClassRoomID }
 
-constructor TFClassRoomID.Create(AParentTable: TMyTable);
+procedure TFClassRoomID.Initializate;
 begin
-  inherited Create(AParentTable);
-  FName := FParentTable.Name + '.CLASS_ID';
+  inherited Initializate();
+  FName := fnClassRoomsID;
+  FCaption := fcClassRoomsID;
+  FRefrenceTableName := tnClassRooms;
 end;
 
 { TFWeekDayID }
 
-constructor TFWeekDayID.Create(AParentTable: TMyTable);
+procedure TFWeekDayID.Initializate;
 begin
-  inherited Create(AParentTable);
-  FName := FParentTable.Name + '.WEEKDAY_ID';
+  inherited Initializate();
+  FName := fnWeekdaysID;
+  FCaption := fcWeekdaysID;
+  FRefrenceTableName := tnWeekdays;
 end;
 
 { TFPairID }
 
-constructor TFPairID.Create(AParentTable: TMyTable);
+procedure TFPairID.Initializate;
 begin
-  inherited Create(AParentTable);
-  FName := FParentTable.Name + '.PAIR_ID';
+  inherited Initializate();
+  FName := fnPairsID;
+  FCaption := fcPairsID;
+  FRefrenceTableName := tnPairs;
 end;
 
 { TFTeacherID }
 
-constructor TFTeacherID.Create(AParentTable: TMyTable);
+procedure TFTeacherID.Initializate;
 begin
-  inherited Create(AParentTable);
-  FName := FParentTable.Name + '.TEACHER_ID';
+  inherited Initializate();
+  FName := fnTeachersID;
+  FCaption := fcTeachersID;
+  FRefrenceTableName := tnTeachers;
 end;
 
 { TFSubjectID }
 
-constructor TFSubjectID.Create(AParentTable: TMyTable);
+procedure TFSubjectID.Initializate;
 begin
-  inherited Create(AParentTable);
-  FName := FParentTable.Name + '.SUBJECT_ID';
+  inherited Initializate;
+  FName := fnSubjectsID;
+  FCaption := fcSubjectsID;
+  FRefrenceTableName := tnSubjects;
 end;
 
 { TFGroupID }
 
-constructor TFGroupID.Create(AParentTable: TMyTable);
+procedure TFGroupID.Initializate;
 begin
-  inherited Create(AParentTable);
-  FName := FParentTable.Name + '.GROUP_ID';
-end;
-
-{ TFIDRefrence }
-
-function TFIDRefrence.GetCaption: string;
-begin
-  Result := FRefrenceTable.NameField.Caption;
-end;
-
-function TFIDRefrence.GetWidth(): integer;
-begin
-  Result := RefrenceTable.NameField.Width;
-end;
-
-constructor TFIDRefrence.Create(AParentTable: TMyTable);
-begin
-  FParentTable := AParentTable;
-  FCaption := 'ID';
-  FWidth := 40;
-  FFieldType := sqlInteger;
+  inherited Initializate;
+  FName := fnGroupsID;
+  FCaption := fcGroupsID;
+  FRefrenceTableName := tnGroups;
+  FParentName := tnGroupsSubjects;
 end;
 
 { TTClassRoomsTable }
 
-constructor TTClassRoomsTable.Create();
+procedure TTClassRoomsTable.Initializate;
 begin
-  FName := 'CLASSROOMS';
-  FCaption := 'Аудитории';
-  inherited Create;
-  AddField(TFClassRoomName.Create(Self));
+  FName := tnClassRooms;
+  FCaption := tcClassRooms;
 end;
 
 { TTSubjectsGroupsTable }
 
-constructor TTSubjectsGroupsTable.Create(ARefrences: TMyTableArray);
+procedure TTSubjectsGroupsTable.Initializate;
 begin
-  FName := 'GROUPS_SUBJECTS';
-  FCaption := 'Соответствие Группы-Предметы';
-  AddField(TFGroupID.Create(Self));
-  AddField(TFSubjectID.Create(Self));
-  inherited Create(ARefrences);
+  FName := tnGroupsSubjects;
+  FCaption := tcGroupsSubjects;
 end;
 
 { TTSubjectsTeachersTable }
 
-constructor TTSubjectsTeachersTable.Create(ARefrences: TMyTableArray);
+procedure TTSubjectsTeachersTable.Initializate;
 begin
-  FName := 'TEACHERS_SUBJECTS';
-  FCaption := 'Соответствие Преподователи-Предметы';
-  AddField(TFTeacherID.Create(Self));
-  AddField(TFSubjectID.Create(Self));
-  inherited Create(ARefrences);
+  FName := tnTeachersSubjects;
+  FCaption := tcTeachersSubjects;
 end;
 
 { TTLessonsTable }
 
-constructor TTLessonsTable.Create(ARefrences: TMyTableArray);
+procedure TTLessonsTable.Initializate;
 begin
-  FName := 'LESSONS';
-  FCaption := 'Занятия';
-  AddField(TFPairID.Create(Self));
-  AddField(TFWeekDayID.Create(Self));
-  AddField(TFGroupID.Create(Self));
-  AddField(TFSubjectID.Create(Self));
-  AddField(TFClassRoomID.Create(Self));
-  AddField(TFTeacherID.Create(Self));
-  inherited Create(ARefrences);
+  FName := tnLessons;
+  FCaption := tcLessons;
 end;
 
 { TTWeekDaysTable }
 
-constructor TTWeekDaysTable.Create();
+procedure TTWeekDaysTable.Initializate;
 begin
-  FName := 'WEEKDAY';
-  FCaption := 'Дни недели';
-  inherited Create;
-  AddField(TFWeekdayName.Create(Self));
+  FName := tnWeekdays;
+  FCaption := tcWeekdays;
 end;
 
 { TTPairsTable }
 
-constructor TTPairsTable.Create;
+procedure TTPairsTable.Initializate;
 begin
-  FName := 'PAIR';
-  FCaption := 'Номера пар';
-  inherited Create;
-  AddField(TFPairNumber.Create(Self));
+  FName := tnPairs;
+  FCaption := tcPairs;
 end;
 
 { TTGroupsTable }
 
-constructor TTGroupsTable.Create;
+procedure TTGroupsTable.Initializate;
 begin
-  FName := 'GROUPS';
-  FCaption := 'Группы';
-  inherited Create;
-  AddField(TFGroupName.Create(Self));
+  FName := tnGroups;
+  FCaption := tcGroups;
 end;
 
 { TTSubjectsTable }
 
-constructor TTSubjectsTable.Create();
+procedure TTSubjectsTable.Initializate;
 begin
-  FName := 'SUBJECTS';
-  FCaption := 'Предметы';
-  inherited Create;
-  AddField(TFSubjectName.Create(Self));
+  FName := tnSubjects;
+  FCaption := tcSubjects;
 end;
 
 { TTTeachersTable }
 
-constructor TTTeachersTable.Create();
+procedure TTTeachersTable.Initializate;
 begin
-  FName := 'TEACHERS';
-  FCaption := 'Преподователи';
-  inherited Create;
-  AddField(TFTeacherName.Create(Self));
+  FName := tnTeachers;
+  FCaption := tcTeachers;
 end;
 
 { TTRefrenceTable }
@@ -450,101 +575,85 @@ var
   i: integer;
   s: string;
 begin
-  Result := TStringList.Create();
-  With Result do begin
-    s := 'SELECT ';
-    for i := 0 to High(FFields) do begin
-      s += FRefrences[i].NameField.Name;
-      if i <> High(FFields) then
-        s += ', ';
-    end;
-    If Result <> nil then
-      Add(s);
-    i += 1;
-    Add('FROM ' + Name);
-  end;
-  with Result do begin
-    for i := 0 to High(FFields) do begin
-      Add('INNER JOIN ' + FRefrences[i].Name);
-      Add('ON ' + FRefrences[i].IDField.Name + ' = ' + FFields[i].Name);
-    end;
-  end;
-end;
-
-constructor TTRefrenceTable.Create(ARefrences: TMyTableArray);
-var
-  ref: TFIDRefrence;
-  i: integer;
-begin
-  for i := 0 to high(ARefrences) do begin
-    (FFields[i] as TFIDRefrence).RefrenceTable := ARefrences[i];
-    SetLength(FRefrences, Length(FRefrences) + 1);
-    FRefrences[i] := ARefrences[i];
-  end;
-end;
-
-{ TTNameTable }
-
-constructor TTNameTable.Create();
-begin
-  AddField(TFID.Create(Self));
+  //Result := TStringList.Create();
+  //With Result do begin
+  //  s := 'SELECT ';
+  //  for i := 0 to High(FFields) do begin
+  //    s += FRefrences[i].NameField.Name;
+  //    if i <> High(FFields) then
+  //      s += ', ';
+  //  end;
+  //  If Result <> nil then
+  //    Add(s);
+  //  i += 1;
+  //  Add('FROM ' + Name);
+  //end;
+  //with Result do begin
+  //  for i := 0 to High(FFields) do begin
+  //    Add('INNER JOIN ' + FRefrences[i].Name);
+  //    Add('ON ' + FRefrences[i].IDField.Name + ' = ' + FFields[i].Name);
+  //  end;
+  //end;
 end;
 
 { TFID }
 
-constructor TFID.Create(AParentTable: TMyTable);
+procedure TFID.Initializate;
 begin
-  FParentTable := AParentTable;
-  FCaption := 'ID';
-  FName := FParentTable.Name + '.ID';
+  FName := fnID;
+  FCaption := fcID;
   FWidth := 40;
   FFieldType := sqlInteger;
 end;
 
 { TFSubjectName }
 
-constructor TFSubjectName.Create(AParentTable: TMyTable);
+procedure TFSubjectName.Initializate();
 begin
-  FCaption := 'Предмет';
-  inherited Create(AParentTable);
+  inherited Initializate;
+  FParentName := tnSubjects;
+  FCaption := fcSubjects;
   FWidth := 240;
 end;
 
 { TFPairNumber }
 
-constructor TFPairNumber.Create(AParentTable: TMyTable);
+procedure TFPairNumber.Initializate;
 begin
-  FParentTable := AParentTable;
-  FCaption := 'Пара';
-  FName := FParentTable.Name + '.Num';
+  FCaption := fcPairs;
+  FParentName := tnPairs;
+  FName := fnNumber;
   FWidth := 40;
   FFieldType := sqlInteger;
 end;
 
 { TFWeekdayName }
 
-constructor TFWeekdayName.Create(AParentTable: TMyTable);
+procedure TFWeekdayName.Initializate;
 begin
-  FCaption := 'День недели';
-  inherited Create(AParentTable);
+  inherited Initializate();
+  FParentName := tnWeekdays;
+  FCaption := fcWeekdays;
   FWidth := 80;
 end;
 
 { TFClassRoomName }
 
-constructor TFClassRoomName.Create(AParentTable: TMyTable);
+procedure TFClassRoomName.Initializate();
 begin
-  FCaption := 'Аудитория';
-  inherited Create(AParentTable);
+  inherited Initializate();
+  FParentName := tnClassRooms;
+  FCaption := fcClassRooms;
   FWidth := 80;
 end;
 
 { TFGroupName }
 
-constructor TFGroupName.Create(AParentTable: TMyTable);
+procedure TFGroupName.Initializate;
 begin
-  FCaption := 'Группа';
-  inherited Create(AParentTable);
+  inherited Initializate();
+  FParentName := tnGroups;
+  FCaption := fcGroups;
   FWidth := 50;
 end;
 
@@ -555,64 +664,59 @@ var
   s: string;
   i: integer;
 begin
-  Result := TStringList.Create();
-  With Result do begin
-    s := 'SELECT ';
-    for i := 0 to High(FFields) do begin
-      s += FFields[i].Name;
-      if i <> High(FFields) then
-        s += ', ';
-    end;
-    If Result <> nil then
-      Add(s);
-    i += 1;
-    Add('FROM ' + Name);
-  end;
+  //Result := TStringList.Create();
+  //With Result do begin
+  //  s := 'SELECT ';
+  //  for i := 0 to High(FFields) do begin
+  //    s += FFields[i].Name;
+  //    if i <> High(FFields) then
+  //      s += ', ';
+  //  end;
+  //  If Result <> nil then
+  //    Add(s);
+  //  i += 1;
+  //  Add('FROM ' + Name);
+  //end;
 end;
 
-function TMyTable.GetIDField: TMyField;
-begin
-  If Length(FFields) <> 0 then Result := FFields[0]
-  else Result := nil;
-end;
-
-function TMyTable.GetNameField: TMyField;
-begin
-  If Length(FFields) > 1 then Result := FFields[High(FFields)]
-  else Result := nil;
-end;
-
-destructor TMyTable.Destroy;
-var
-  f: TMyField;
-begin
-  inherited Destroy;
-  for f in FFields do
-    f.Free;
-end;
-
-procedure TMyTable.AddField(ANewField: TMyField);
+procedure TMyTable.AddField(AField: TMyField);
 begin
   SetLength(FFields, Length(FFields) + 1);
-  FFields[High(FFields)] := ANewField;
+  FFields[High(FFields)] := AField;
 end;
 
-{ TFName }
-
-constructor TFName.Create(AParentTable: TMyTable);
+function TMyTable.GetName: string;
 begin
-  FParentTable := AParentTable;
-  FName := FParentTable.Name + '.name';
-  FFieldType := sqlInteger;
+  Result := TableNames[Integer(FName)];
+end;
+
+function TMyTable.GetCaption: string;
+begin
+  Result := TableCaptions[Integer(FCaption)];
+end;
+
+constructor TMyTable.Create;
+begin
+  Initializate();
+end;
+
+{ TFUnknow }
+
+procedure TFUnknow.Initializate;
+begin
+  FName := fnName;
+  FCaption := fcUnknow;
+  FFieldType := sqlVarChar;
 end;
 
 { TFTeacherName }
 
-constructor TFTeacherName.Create(AParentTable: TMyTable);
+procedure TFTeacherName.Initializate;
 begin
-  FCaption := 'Преподователь';
-  inherited Create(AParentTable);
-  FWidth:= 200;
+  inherited Initializate;
+  FParentName := tnTeachers;
+  FCaption := fcTeachers;
+  FWidth := 200;
 end;
 
 { Procedures }
@@ -620,36 +724,74 @@ end;
 function AddTable(t: TMyTable): TMyTable;
 begin
   Result := t;
-  SetLength(Tables, Length(Tables) + 1);
-  Tables[High(Tables)] := t;
+  SetLength(MyTables, Length(MyTables) + 1);
+  MyTables[High(MyTables)] := t;
 end;
 
-function AddTableFromClass(t: TTRefrenceTableClass; ARefrence1,
-  ARefrence2: TMyTable): TMyTable;
-var
-  a: TMyTableArray;
+function AddField(f: TMyField): TMyField;
 begin
-  SetLength(a, 2);
-  a[0] := ARefrence1;
-  a[1] := ARefrence2;
-  Result := t.Create(a);
-  SetLength(Tables, Length(Tables) + 1);
-  Tables[High(Tables)] := Result;
+  Result := f;
+  SetLength(MyFields, Length(MyFields) + 1);
+  MyFields[High(MyFields)] := f;
 end;
 
-initialization
+procedure InitializationMeta();
+begin
   SQLTypes[Integer(sqlInteger)] := 'INTEGER';
   SQLTypes[Integer(sqlVarChar)] := 'VARCHAR(50)';
   SQLTypes[Integer(sqlBoolean)] := 'BOOLEAN';
   SQLTypes[Integer(sqlFloat)] := 'FLOAT';
-  PairTable := AddTable(TTPairsTable.Create());
-  WeekDayTable := AddTable(TTWeekDaysTable .Create());
-  GroupsTable := AddTable(TTGroupsTable.Create());
-  SubjectsTable := AddTable(TTSubjectsTable.Create());
-  ClassRoomsTable := AddTable(TTClassRoomsTable.Create());
-  TeachersTable := AddTable(TTTeachersTable .Create());
-  AddTable(TTLessonsTable.Create(Tables));
-  AddTableFromClass(TTSubjectsGroupsTable, GroupsTable, SubjectsTable);
-  AddTableFromClass(TTSubjectsTeachersTable, TeachersTable, SubjectsTable);
+
+  TableNames[Integer(tnClassRooms)] := 'CLASSROOMS ';
+  TableNames[Integer(tnGroups)] := 'GROUPS ';
+  TableNames[Integer(tnGroupsSubjects)] := 'GROUPS_SUBJECTS ';
+  TableNames[Integer(tnLessons)] := 'LESSONS ';
+  TableNames[Integer(tnPairs)] := 'PAIR ';
+  TableNames[Integer(tnSubjects)] := 'SUBJECTS ';
+  TableNames[Integer(tnTeachers)] := 'TEACHERS ';
+  TableNames[Integer(tnTeachersSubjects)] := 'TEACHERS_SUBJECTS ';
+  TableNames[Integer(tnWeekdays)] := 'WEEKDAY ';
+
+  TableCaptions[Integer(tcClassRooms)] := 'Аудитории';
+  TableCaptions[Integer(tcGroups)] := 'Группы';
+  TableCaptions[Integer(tcGroupsSubjects)] := 'Соотношение Группы-Предметы';
+  TableCaptions[Integer(tcLessons)] := 'Занятия';
+  TableCaptions[Integer(tcPairs)] := 'Пары';
+  TableCaptions[Integer(tcSubjects)] := 'Предметы';
+  TableCaptions[Integer(tcTeachers)] := 'Преподователи';
+  TableCaptions[Integer(tcTeachersSubjects)] := 'Соотношения Группы_Предметы';
+  TableCaptions[Integer(tcWeekdays)] := 'Дни недели';
+
+  FieldCaption[Integer(fcUnknow)] := 'Неизвестно';
+  FieldCaption[Integer(fcID)] := 'ID';
+  FieldCaption[Integer(fcTeachers)] := 'Преподователь';
+  FieldCaption[Integer(fcSubjects)] := 'Предмет';
+  FieldCaption[Integer(fcPairs)] := 'Пара';
+  FieldCaption[Integer(fcWeekdays)] := 'День недели';
+  FieldCaption[Integer(fcGroups)] := 'Группы';
+  FieldCaption[Integer(fcClassRooms)] := 'Аудитория';
+  FieldCaption[Integer(fcTeachersID)] := 'ID Преподователя';
+  FieldCaption[Integer(fcSubjectsID)] := 'ID Предмета';
+  FieldCaption[Integer(fcPairsID)] := 'ID Пары';
+  FieldCaption[Integer(fcWeekdaysID)] := 'ID Дня недели';
+  FieldCaption[Integer(fcGroupsID)] := 'ID Группы';
+  FieldCaption[Integer(fcClassRoomsID)] := 'ID Аудитории';
+
+  FieldNames[Integer(fnUnknow)] := 'UNKNOW ';
+  FieldNames[Integer(fnID)] := 'ID ';
+  FieldNames[Integer(fnNumber)] := 'NUM ';
+  FieldNames[Integer(fnName)] := 'NAME ';
+  FieldNames[Integer(fnClassRoomsID)] := 'CLASS_ID ';
+  FieldNames[Integer(fnGroupsID)] := 'GROUP_ID ';
+  FieldNames[Integer(fnPairsID)] := 'PAIR_ID ';
+  FieldNames[Integer(fnSubjectsID)] := 'SUBJECT_ID ';
+  FieldNames[Integer(fnTeachersID)] := 'TEACHER_ID ';
+  FieldNames[Integer(fnWeekdaysID)] := 'WEEKDAY_ID ';
+end;
+
+initialization
+  InitializationMeta();
+  MetaLibrary := TMetaLibrary.Create();
+
 end.
 

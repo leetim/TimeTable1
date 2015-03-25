@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, IBConnection, sqldb, memds, db, FileUtil, SynMemo,
   SynHighlighterSQL, Forms, Controls, Graphics, Dialogs, DbCtrls, UTable, Menus,
-  StdCtrls, UMeta, uConnectionForm, uconnection, DBGrids;
+  StdCtrls, UMeta, uTableManager, uConnectionForm, uconnection, DBGrids;
 
 type
 
@@ -49,10 +49,10 @@ implementation
 
 procedure TTimeTableForm.FormCreate(Sender: TObject);
 var
-  t: TMyTable;
+  t: TTableManager;
 begin
   Application.OnException := @ExceptionHandler;
-  for t in Tables do begin
+  for t in TableManagers do begin
     SetLength(SubTabelsItems, Length(SubTabelsItems) + 1);
     SubTabelsItems[High(SubTabelsItems)] := t.GetMenuItem(Self);
     TabelsItem.Insert(High(SubTabelsItems), SubTabelsItems[High(SubTabelsItems)]);

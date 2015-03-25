@@ -5,7 +5,7 @@ unit uTableManager;
 interface
 
 uses
-  Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls, UMeta;
+  Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls, UMeta, sqldb;
 
 type
 
@@ -15,7 +15,6 @@ type
     private
       FForm: TTableForm;
       FTable: TMyTable;
-      FFields: array of TMyField;
       FMenuItemLink: TMenuItem;
       procedure MakeForm(); virtual;
       procedure OnClickEvent(Sender: TObject);
@@ -23,7 +22,6 @@ type
     public
       constructor Create(ATable: TMyTable);
       function GetMenuItem(AParent: TControl): TMenuItem;
-      destructor Destroy(); override;
   end;
 
   { TRefrenceTableManager }
@@ -59,7 +57,7 @@ procedure AddAllManagers;
 var
   t: TMyTable;
 begin
-  for t in Tables do
+  for t in MetaLibrary.Tables do
     If t is TTRefrenceTable then
       AddRefrenceTableManager(t)
     else
@@ -79,16 +77,16 @@ end;
 procedure TTableManager.MakeForm();
 var
   i: integer;
-  s: TStringList;
+  s: String;
 begin
   Application.CreateForm(TTableForm, FForm);
+ // AddFields(FForm.SQLQuery);
   With FForm do begin
     OnClose := @OnCloseEvent;
     Caption := FTable.Caption;
     with SQLQuery do begin
-      s := FTable.GetSQLCode();
-      SQL.AddStrings(s);
-      s.Free;
+      s := 'SELECT * FROM ' + FTable.Name;
+      SQL.Add(s);
       Active := True;
     end;
     with DBGrid.Columns do
@@ -96,7 +94,7 @@ begin
         Items[i].Title.Caption := FTable.Fields[i].Caption;
         Items[i].Width := FTable.Fields[i].Width;
       end;
-  end;;
+  end;
 end;
 
 procedure TTableManager.OnClickEvent(Sender: TObject);
@@ -125,16 +123,6 @@ begin
     Caption := FTable.Caption;
     OnClick := @OnClickEvent;
   end;
-end;
-
-destructor TTableManager.Destroy;
-var
-  f: TMyField;
-begin
-  inherited Destroy();
-  FTable.Free;
-  for f in FFields do
-    f.Free;
 end;
 
 initialization
