@@ -70,12 +70,12 @@ end;
 
 { TRefrenceTableManager }
 
-procedure TRefrenceTableManager.MakeForm();var
+procedure TRefrenceTableManager.MakeForm();
+var
   i: integer;
   s: String;
 begin
   Application.CreateForm(TTableForm, FForm);
- // AddFields(FForm.SQLQuery);
   With FForm do begin
     OnClose := @OnCloseEvent;
     Caption := FTable.Caption;
@@ -91,8 +91,6 @@ begin
           (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Width;
       end;
   end;
-//begin
-  //inherited MakeForm();
   FForm.DBNavigator.VisibleButtons := [nbFirst, nbLast, nbNext, nbPrior]
 end;
 
@@ -121,8 +119,6 @@ var
   i: integer;
 begin
   inherited Create(ATable);
-  If ATable is TTLessonsTable then
-    i := 1;
   with ATable do begin
     SetLength(FRefrences, MaxIndex + 1);
     for i := 0 to MaxIndex do
@@ -138,7 +134,6 @@ var
   s: String;
 begin
   Application.CreateForm(TTableForm, FForm);
- // AddFields(FForm.SQLQuery);
   With FForm do begin
     OnClose := @OnCloseEvent;
     Caption := FTable.Caption;

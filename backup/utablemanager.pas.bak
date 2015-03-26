@@ -102,8 +102,8 @@ var
 begin
   Result := 'SELECT ';
   with FTable do begin
-    for i := 1 to MaxIndex do begin
-      Result += FRefrences[i].Name + '.' + FRefrences[i].Fields[MaxIndex].Name;
+    for i := 0 to MaxIndex do begin
+      Result += FRefrences[i].Name + '.' + FRefrences[i].Fields[1].Name;
       if i <> MaxIndex then
         Result += ', ';
     end;
