@@ -73,7 +73,6 @@ type
       property Caption: string read GetCaption;
       property Fields: TMyFieldsArray read FFields;
       property MaxIndex: integer read GetMaxIndex;
-      function GetSQLCode(): TStringList; virtual;
   end;
 
   TMyTableClass = class of TMyTable;
@@ -212,7 +211,6 @@ type
       FRefrences: TMyTableArray;
     public
       property Refrences: TMyTableArray read FRefrences;
-      function GetSQLCode(): TStringList; override;
   end;
 
   TTRefrenceTableClass = class of TTRefrenceTable;
@@ -383,22 +381,22 @@ begin
   With FMyTables[High(FMyTables)] do begin
     AddField(FMyFields[Integer(lfPairID)]);
     (FMyFields[Integer(lfPairID)] as TFIDRefrence).
-      MakeRefrence(FMyTables[tnPairs]);
+      MakeRefrence(FMyTables[Integer(tnPairs)]);
     AddField(FMyFields[Integer(lfWeekDayID)]);
     (FMyFields[Integer(lfWeekDayID)] as TFIDRefrence).
-      MakeRefrence(FMyTables[tnWeekdays]);
+      MakeRefrence(FMyTables[Integer(tnWeekdays)]);
     AddField(FMyFields[Integer(lfGroupID)]);
     (FMyFields[Integer(lfGroupID)] as TFIDRefrence).
-      MakeRefrence(FMyTables[tnGroups]);
+      MakeRefrence(FMyTables[Integer(tnGroups)]);
     AddField(FMyFields[Integer(lfSubjectID)]);
     (FMyFields[Integer(lfSubjectID)] as TFIDRefrence).
-      MakeRefrence(FMyTables[tnSubjects]);
+      MakeRefrence(FMyTables[Integer(tnSubjects)]);
     AddField(FMyFields[Integer(lfClassRoomID)]);
     (FMyFields[Integer(lfClassRoomID)] as TFIDRefrence).
-      MakeRefrence(FMyTables[tnClassRooms]);
+      MakeRefrence(FMyTables[Integer(tnClassRooms)]);
     AddField(FMyFields[Integer(lfTeacherID)]);
     (FMyFields[Integer(lfTeacherID)] as TFIDRefrence).
-      MakeRefrence(FMyTables[tneachers]);
+      MakeRefrence(FMyTables[Integer(tnTeachers)]);
   end;
 end;
 
@@ -593,34 +591,6 @@ begin
   FCaption := tcTeachers;
 end;
 
-{ TTRefrenceTable }
-
-function TTRefrenceTable.GetSQLCode(): TStringList;
-var
-  i: integer;
-  s: string;
-begin
-  //Result := TStringList.Create();
-  //With Result do begin
-  //  s := 'SELECT ';
-  //  for i := 0 to High(FFields) do begin
-  //    s += FRefrences[i].NameField.Name;
-  //    if i <> High(FFields) then
-  //      s += ', ';
-  //  end;
-  //  If Result <> nil then
-  //    Add(s);
-  //  i += 1;
-  //  Add('FROM ' + Name);
-  //end;
-  //with Result do begin
-  //  for i := 0 to High(FFields) do begin
-  //    Add('INNER JOIN ' + FRefrences[i].Name);
-  //    Add('ON ' + FRefrences[i].IDField.Name + ' = ' + FFields[i].Name);
-  //  end;
-  //end;
-end;
-
 { TFID }
 
 procedure TFID.Initializate;
@@ -798,7 +768,7 @@ begin
   FieldCaption[Integer(fcSubjects)] := 'Предмет';
   FieldCaption[Integer(fcPairs)] := 'Пара';
   FieldCaption[Integer(fcWeekdays)] := 'День недели';
-  FieldCaption[Integer(fcGroups)] := 'Группы';
+  FieldCaption[Integer(fcGroups)] := 'Группа';
   FieldCaption[Integer(fcClassRooms)] := 'Аудитория';
   FieldCaption[Integer(fcTeachersID)] := 'ID Преподователя';
   FieldCaption[Integer(fcSubjectsID)] := 'ID Предмета';

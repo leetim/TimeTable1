@@ -73,7 +73,6 @@ type
       property Caption: string read GetCaption;
       property Fields: TMyFieldsArray read FFields;
       property MaxIndex: integer read GetMaxIndex;
-      function GetSQLCode(): TStringList; virtual;
   end;
 
   TMyTableClass = class of TMyTable;
@@ -212,7 +211,6 @@ type
       FRefrences: TMyTableArray;
     public
       property Refrences: TMyTableArray read FRefrences;
-      function GetSQLCode(): TStringList; override;
   end;
 
   TTRefrenceTableClass = class of TTRefrenceTable;
@@ -593,34 +591,6 @@ begin
   FCaption := tcTeachers;
 end;
 
-{ TTRefrenceTable }
-
-function TTRefrenceTable.GetSQLCode(): TStringList;
-var
-  i: integer;
-  s: string;
-begin
-  //Result := TStringList.Create();
-  //With Result do begin
-  //  s := 'SELECT ';
-  //  for i := 0 to High(FFields) do begin
-  //    s += FRefrences[i].NameField.Name;
-  //    if i <> High(FFields) then
-  //      s += ', ';
-  //  end;
-  //  If Result <> nil then
-  //    Add(s);
-  //  i += 1;
-  //  Add('FROM ' + Name);
-  //end;
-  //with Result do begin
-  //  for i := 0 to High(FFields) do begin
-  //    Add('INNER JOIN ' + FRefrences[i].Name);
-  //    Add('ON ' + FRefrences[i].IDField.Name + ' = ' + FFields[i].Name);
-  //  end;
-  //end;
-end;
-
 { TFID }
 
 procedure TFID.Initializate;
@@ -680,28 +650,6 @@ begin
   FParentName := tnGroups;
   FCaption := fcGroups;
   FWidth := 50;
-end;
-
-{ TMyTable }
-
-function TMyTable.GetSQLCode: TStringList;
-var
-  s: string;
-  i: integer;
-begin
-  //Result := TStringList.Create();
-  //With Result do begin
-  //  s := 'SELECT ';
-  //  for i := 0 to High(FFields) do begin
-  //    s += FFields[i].Name;
-  //    if i <> High(FFields) then
-  //      s += ', ';
-  //  end;
-  //  If Result <> nil then
-  //    Add(s);
-  //  i += 1;
-  //  Add('FROM ' + Name);
-  //end;
 end;
 
 procedure TMyTable.AddField(AField: TMyField);
@@ -798,7 +746,7 @@ begin
   FieldCaption[Integer(fcSubjects)] := 'Предмет';
   FieldCaption[Integer(fcPairs)] := 'Пара';
   FieldCaption[Integer(fcWeekdays)] := 'День недели';
-  FieldCaption[Integer(fcGroups)] := 'Группы';
+  FieldCaption[Integer(fcGroups)] := 'Группа';
   FieldCaption[Integer(fcClassRooms)] := 'Аудитория';
   FieldCaption[Integer(fcTeachersID)] := 'ID Преподователя';
   FieldCaption[Integer(fcSubjectsID)] := 'ID Предмета';

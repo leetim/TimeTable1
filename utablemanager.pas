@@ -103,7 +103,7 @@ begin
   Result := 'SELECT ';
   with FTable do begin
     for i := 0 to MaxIndex do begin
-      Result += FRefrences[i].Name + '.' + FRefrences[i].Fields[MaxIndex].Name;
+      Result += FRefrences[i].Name + '.' + FRefrences[i].Fields[1].Name;
       if i <> MaxIndex then
         Result += ', ';
     end;
@@ -121,6 +121,8 @@ var
   i: integer;
 begin
   inherited Create(ATable);
+  If ATable is TTLessonsTable then
+    i := 1;
   with ATable do begin
     SetLength(FRefrences, MaxIndex + 1);
     for i := 0 to MaxIndex do
