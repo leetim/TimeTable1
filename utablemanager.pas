@@ -37,6 +37,7 @@ type
 
   TRefrenceTableManager = class(TTableManager)
     private
+      FOrderedFieldPerentTable: TMyTable;
       FRefrences: TMyTableArray;
       procedure MakeForm(); override;
       procedure Refresh; override;
@@ -124,15 +125,15 @@ begin
     end;
   end;
   If FOrderedField <> nil then
-    Result += ' ORDER BY ' + FTable.Name + '.' + FOrderedField.Name
-
-
+    Result += ' ORDER BY ' + FOrderedFieldPerentTable.Name
+      + '.' + FOrderedField.Name
 end;
 
 procedure TRefrenceTableManager.OnTitleClickEvent(Column: TColumn);
 begin
-  FOrderedField :=
-    (FTable.Fields[Column.Index] as TFIDRefrence).RefrenceTable.Fields[1];
+  FOrderedFieldPerentTable :=
+    (FTable.Fields[Column.Index] as TFIDRefrence).RefrenceTable;
+  FOrderedField := FOrderedFieldPerentTable.Fields[1];
   Refresh();
 end;
 
