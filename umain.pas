@@ -15,14 +15,14 @@ type
 
   TTimeTableForm = class(TForm)
     ExcecuteStatementButton: TButton;
-    MainMenu1: TMainMenu;
+    MainMenu: TMainMenu;
     FileItem: TMenuItem;
     AboutItem: TMenuItem;
     CodeMemo: TSynMemo;
     LogsMemo: TMemo;
+    TabelsItem: TMenuItem;
     SQLTransaction: TSQLTransaction;
     SynSQLSyn1: TSynSQLSyn;
-    TabelsItem: TMenuItem;
     ExitItem: TMenuItem;
     procedure AboutItemClick(Sender: TObject);
     procedure ExcecuteStatementButtonClick(Sender: TObject);
@@ -62,7 +62,7 @@ end;
 procedure TTimeTableForm.ExceptionHandler(Sender: TObject; E: Exception);
 begin
   LogsMemo.Lines.Add(E.Message);
-  If TableForm.Visible then TableForm.Close;
+  If (TableForm <> nil) and TableForm.Visible then TableForm.Close;
 end;
 
 procedure TTimeTableForm.ExcecuteStatementButtonClick(Sender: TObject);

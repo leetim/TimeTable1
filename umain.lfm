@@ -1,14 +1,14 @@
 object TimeTableForm: TTimeTableForm
-  Left = 354
+  Left = 409
   Height = 458
-  Top = 163
+  Top = 161
   Width = 745
   Caption = 'Редактор расписания'
   ClientHeight = 438
   ClientWidth = 745
   Constraints.MinHeight = 300
   Constraints.MinWidth = 400
-  Menu = MainMenu1
+  Menu = MainMenu
   OnCreate = FormCreate
   LCLVersion = '1.2.4.0'
   object ExcecuteStatementButton: TButton
@@ -549,18 +549,18 @@ object TimeTableForm: TTimeTableForm
     ScrollBars = ssAutoVertical
     TabOrder = 2
   end
-  object MainMenu1: TMainMenu
-    left = 336
+  object MainMenu: TMainMenu
+    left = 360
     top = 288
     object FileItem: TMenuItem
       Caption = 'Файл'
-      object TabelsItem: TMenuItem
-        Caption = 'Таблицы'
-      end
       object ExitItem: TMenuItem
         Caption = 'Выход'
         OnClick = ExitItemClick
       end
+    end
+    object TabelsItem: TMenuItem
+      Caption = 'Талицы'
     end
     object AboutItem: TMenuItem
       Caption = 'О программе'
@@ -570,8 +570,8 @@ object TimeTableForm: TTimeTableForm
   object SQLTransaction: TSQLTransaction
     Active = False
     Database = ConnectionModule.ConnectionComponent
-    left = 264
-    top = 248
+    left = 312
+    top = 288
   end
   object SynSQLSyn1: TSynSQLSyn
     DefaultFilter = 'Файлы SQL (*.sql)|*.sql'
@@ -594,7 +594,7 @@ object TimeTableForm: TTimeTableForm
     TableNameAttri.FrameEdges = sfeAround
     VariableAttri.FrameEdges = sfeAround
     SQLDialect = sqlSybase
-    left = 224
-    top = 248
+    left = 272
+    top = 288
   end
 end

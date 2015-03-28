@@ -5,7 +5,12 @@ unit uTableManager;
 interface
 
 uses
-  Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls, UMeta, sqldb;
+  Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls, UMeta, sqldb,
+  DBGrids;
+
+const
+  Indent = 5;
+  ScrollLength = 20;
 
 type
 
@@ -16,9 +21,12 @@ type
       FForm: TTableForm;
       FTable: TMyTable;
       FMenuItemLink: TMenuItem;
+      FOrderedField: TMyField;
       procedure MakeForm(); virtual;
+      procedure Refresh(); virtual;
       procedure OnClickEvent(Sender: TObject);
       procedure OnCloseEvent(Sender: TObject; var CloseAction: TCloseAction);
+      procedure OnTitleClickEvent(Column: TColumn); virtual;
       function GetSQLCode(): string; virtual;
     public
       constructor Create(ATable: TMyTable); virtual;
@@ -31,7 +39,9 @@ type
     private
       FRefrences: TMyTableArray;
       procedure MakeForm(); override;
+      procedure Refresh; override;
       function GetSQLCode: string; override;
+      procedure OnTitleClickEvent(Column: TColumn); override;
     public
       constructor Create(ATable: TMyTable); override;
   end;
@@ -71,30 +81,31 @@ end;
 { TRefrenceTableManager }
 
 procedure TRefrenceTableManager.MakeForm();
-var
-  i: integer;
-  s: String;
 begin
-  Application.CreateForm(TTableForm, FForm);
-  With FForm do begin
-    OnClose := @OnCloseEvent;
-    Caption := FTable.Caption;
-    with SQLQuery do begin
-      SQL.Add(GetSQLCode());
-      Active := True;
-    end;
-    with DBGrid.Columns do
-      for i := 0 to Count - 1 do begin
-        Items[i].Title.Caption :=
-          (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Caption;
-        Items[i].Width :=
-          (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Width;
-      end;
-  end;
+  inherited MakeForm();
   FForm.DBNavigator.VisibleButtons := [nbFirst, nbLast, nbNext, nbPrior]
 end;
 
-function TRefrenceTableManager.GetSQLCode: string;
+procedure TRefrenceTableManager.Refresh;
+var
+  i: integer;
+begin
+  with FForm.SQLQuery do begin
+    Active := False;
+    SQL.Clear;
+    SQL.Add(GetSQLCode());
+    Active := True;
+  end;
+  with FForm.DBGrid.Columns do
+    for i := 0 to Count - 1 do begin
+      Items[i].Title.Caption :=
+        (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Caption;
+      Items[i].Width :=
+        (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Width;
+    end;
+end;
+
+function TRefrenceTableManager.GetSQLCode(): string;
 var
   i: integer;
 begin
@@ -105,13 +116,24 @@ begin
       if i <> MaxIndex then
         Result += ', ';
     end;
-    Result += 'FROM ' + Name;
+    Result += ' FROM ' + Name;
     for i := 0 to High(FRefrences) do begin
-      Result += 'INNER JOIN ' + FRefrences[i].Name;
-      Result += 'ON ' + FRefrences[i].Name + '.' + FRefrences[i].Fields[0].Name +
+      Result += ' INNER JOIN ' + FRefrences[i].Name;
+      Result += ' ON ' + FRefrences[i].Name + '.' + FRefrences[i].Fields[0].Name +
         ' = ' + Name + '.' + Fields[i].Name;
     end;
   end;
+  If FOrderedField <> nil then
+    Result += ' ORDER BY ' + FTable.Name + '.' + FOrderedField.Name
+
+
+end;
+
+procedure TRefrenceTableManager.OnTitleClickEvent(Column: TColumn);
+begin
+  FOrderedField :=
+    (FTable.Fields[Column.Index] as TFIDRefrence).RefrenceTable.Fields[1];
+  Refresh();
 end;
 
 constructor TRefrenceTableManager.Create(ATable: TMyTable);
@@ -129,31 +151,40 @@ end;
 { TTableManager }
 
 procedure TTableManager.MakeForm();
-var
-  i: integer;
-  s: String;
 begin
   Application.CreateForm(TTableForm, FForm);
   With FForm do begin
     OnClose := @OnCloseEvent;
+    DBGrid.OnTitleClick  := @OnTitleClickEvent;
     Caption := FTable.Caption;
-    with SQLQuery do begin
-      SQL.Add(GetSQLCode());
-      Active := True;
-    end;
-    with DBGrid.Columns do
-      for i := 0 to Count - 1 do begin
-        Items[i].Title.Caption := FTable.Fields[i].Caption;
-        Items[i].Width := FTable.Fields[i].Width;
-      end;
+    Width := FTable.Width + 2 * Indent + ScrollLength;
   end;
+end;
+
+procedure TTableManager.Refresh();
+var
+  i: integer;
+begin
+  with FForm.SQLQuery do begin
+    Active := False;
+    SQL.Clear;
+    SQL.Add(GetSQLCode());
+    Active := True;
+  end;
+  with FForm.DBGrid.Columns do
+    for i := 0 to Count - 1 do begin
+      Items[i].Title.Caption := FTable.Fields[i].Caption;
+      Items[i].Width := FTable.Fields[i].Width;
+    end;
 end;
 
 procedure TTableManager.OnClickEvent(Sender: TObject);
 begin
   If FForm = nil then MakeForm();
-  (Sender as TMenuItem).Checked := True;
+  FOrderedField := nil;
+  Refresh();
   FForm.ShowOnTop;
+  (Sender as TMenuItem).Checked := True;
 end;
 
 procedure TTableManager.OnCloseEvent(Sender: TObject;
@@ -162,9 +193,17 @@ begin
   FMenuItemLink.Checked := False;
 end;
 
+procedure TTableManager.OnTitleClickEvent(Column: TColumn);
+begin
+  FOrderedField := FTable.Fields[Column.Index];
+  Refresh();
+end;
+
 function TTableManager.GetSQLCode(): string;
 begin
   Result := 'SELECT * FROM ' + FTable.Name;
+  If FOrderedField <> nil then
+    Result += ' ORDER BY ' + FTable.Name + '.' + FOrderedField.Name;
 end;
 
 constructor TTableManager.Create(ATable: TMyTable);

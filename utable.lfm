@@ -28,6 +28,7 @@ object TableForm: TTableForm
     Columns = <>
     DataSource = DataSource
     TabOrder = 0
+    OnTitleClick = DBGridTitleClick
   end
   object DBNavigator: TDBNavigator
     AnchorSideLeft.Control = Owner
