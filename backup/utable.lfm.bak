@@ -28,6 +28,7 @@ object TableForm: TTableForm
     Columns = <>
     DataSource = DataSource
     TabOrder = 0
+    OnTitleClick = DBGridTitleClick
   end
   object DBNavigator: TDBNavigator
     AnchorSideLeft.Control = Owner
@@ -64,7 +65,7 @@ object TableForm: TTableForm
     )
     Params = <>
     left = 555
-    top = 350
+    top = 352
   end
   object DataSource: TDataSource
     DataSet = SQLQuery

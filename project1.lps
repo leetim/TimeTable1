@@ -9,6 +9,7 @@
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="project1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
@@ -25,7 +26,7 @@
         <UnitName Value="UMain"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
+        <TopLine Value="58"/>
         <CursorPos X="75" Y="58"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -37,7 +38,7 @@
         <UnitName Value="UMeta"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="10"/>
+        <TopLine Value="398"/>
         <CursorPos X="23" Y="24"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -51,7 +52,7 @@
         <UnitName Value="UTable"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="5"/>
+        <TopLine Value="4"/>
         <CursorPos X="5" Y="39"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -68,7 +69,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="22" Y="23"/>
-        <UsageCount Value="119"/>
+        <UsageCount Value="128"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit4>
@@ -76,12 +77,11 @@
         <Filename Value="utablemanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uTableManager"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="118"/>
-        <CursorPos X="44" Y="136"/>
-        <UsageCount Value="108"/>
+        <TopLine Value="1"/>
+        <CursorPos X="30" Y="134"/>
+        <UsageCount Value="117"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -89,7 +89,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="918"/>
         <CursorPos X="44" Y="927"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit6>
       <Unit7>
         <Filename Value="C:\lazarus\lcl\stdctrls.pp"/>
@@ -97,14 +97,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1027"/>
         <CursorPos X="3" Y="1046"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="50"/>
       </Unit7>
       <Unit8>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\classesh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="546"/>
         <CursorPos X="14" Y="564"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="29"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -112,21 +112,21 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1214"/>
         <CursorPos X="3" Y="1229"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit9>
       <Unit10>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\objpash.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="173"/>
         <CursorPos X="23" Y="192"/>
-        <UsageCount Value="55"/>
+        <UsageCount Value="54"/>
       </Unit10>
       <Unit11>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\objpas.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="265"/>
         <CursorPos X="9" Y="267"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="47"/>
       </Unit11>
       <Unit12>
         <Filename Value="C:\lazarus\lcl\dbgrids.pas"/>
@@ -135,7 +135,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="197"/>
         <CursorPos X="3" Y="216"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="38"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -144,7 +144,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="561"/>
         <CursorPos X="3" Y="577"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="21"/>
       </Unit13>
       <Unit14>
         <Filename Value="C:\lazarus\lcl\interfaces\win32\win32wscontrols.pp"/>
@@ -152,14 +152,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="232"/>
         <CursorPos X="37" Y="251"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="9"/>
       </Unit14>
       <Unit15>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\stringl.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="633"/>
         <CursorPos X="3" Y="638"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit15>
       <Unit16>
         <Filename Value="uconnectionform.pas"/>
@@ -169,7 +169,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="43" Y="35"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="19"/>
       </Unit16>
       <Unit17>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-db\src\base\db.pas"/>
@@ -177,7 +177,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="239"/>
         <CursorPos X="3" Y="246"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit17>
       <Unit18>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-base\src\custapp.pp"/>
@@ -185,7 +185,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="8"/>
         <CursorPos X="64" Y="24"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit18>
       <Unit19>
         <Filename Value="C:\lazarus\lcl\dbctrls.pp"/>
@@ -193,14 +193,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1166"/>
         <CursorPos X="45" Y="1188"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit19>
       <Unit20>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\persist.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="18"/>
         <CursorPos X="3" Y="23"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit20>
       <Unit21>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-db\src\sqldb\sqldb.pp"/>
@@ -208,14 +208,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="418"/>
         <CursorPos X="3" Y="437"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="19"/>
       </Unit21>
       <Unit22>
         <Filename Value="C:\lazarus\lcl\include\menuitem.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="68"/>
         <CursorPos X="65" Y="80"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit22>
       <Unit23>
         <Filename Value="C:\lazarus\lcl\lclproc.pas"/>
@@ -223,133 +223,125 @@
         <WindowIndex Value="0"/>
         <TopLine Value="842"/>
         <CursorPos X="1" Y="861"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit23>
     </Units>
     <General>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="28" HistoryIndex="27">
       <Position1>
         <Filename Value="utablemanager.pas"/>
         <Caret Line="151" Column="34" TopLine="125"/>
       </Position1>
       <Position2>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="30" Column="34" TopLine="163"/>
+        <Caret Line="45" Column="17" TopLine="26"/>
       </Position2>
       <Position3>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="45" Column="17" TopLine="26"/>
+        <Caret Line="43" Column="35" TopLine="16"/>
       </Position3>
       <Position4>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="43" Column="35" TopLine="16"/>
+        <Caret Line="130" Column="3" TopLine="128"/>
       </Position4>
       <Position5>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="130" Column="3" TopLine="128"/>
+        <Caret Line="127" Column="68" TopLine="108"/>
       </Position5>
       <Position6>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="127" Column="68" TopLine="108"/>
+        <Caret Line="126" Column="1" TopLine="98"/>
       </Position6>
       <Position7>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="95" Column="73" TopLine="98"/>
+        <Caret Line="129" Column="5" TopLine="98"/>
       </Position7>
       <Position8>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="126" Column="1" TopLine="98"/>
+        <Caret Line="123" Column="29" TopLine="99"/>
       </Position8>
       <Position9>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="129" Column="5" TopLine="98"/>
+        <Caret Line="126" Column="1" TopLine="99"/>
       </Position9>
       <Position10>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="123" Column="29" TopLine="99"/>
+        <Caret Line="97" Column="1" TopLine="78"/>
       </Position10>
       <Position11>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="126" Column="1" TopLine="99"/>
+        <Caret Line="126" Column="1" TopLine="107"/>
       </Position11>
       <Position12>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="97" Column="1" TopLine="78"/>
+        <Caret Line="127" Column="1" TopLine="107"/>
       </Position12>
       <Position13>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="126" Column="1" TopLine="107"/>
+        <Filename Value="uconnection.pas"/>
+        <Caret Line="23" Column="22" TopLine="1"/>
       </Position13>
       <Position14>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="127" Column="1" TopLine="107"/>
+        <Caret Line="144" Column="34" TopLine="107"/>
       </Position14>
       <Position15>
-        <Filename Value="uconnection.pas"/>
-        <Caret Line="23" Column="22" TopLine="1"/>
+        <Filename Value="utablemanager.pas"/>
+        <Caret Line="126" Column="1" TopLine="107"/>
       </Position15>
       <Position16>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="144" Column="34" TopLine="107"/>
+        <Caret Line="127" Column="1" TopLine="107"/>
       </Position16>
       <Position17>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="126" Column="1" TopLine="107"/>
+        <Caret Line="130" Column="1" TopLine="107"/>
       </Position17>
       <Position18>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="127" Column="1" TopLine="107"/>
+        <Caret Line="91" Column="20" TopLine="78"/>
       </Position18>
       <Position19>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="130" Column="1" TopLine="107"/>
+        <Caret Line="112" Column="3" TopLine="108"/>
       </Position19>
       <Position20>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="91" Column="20" TopLine="78"/>
+        <Caret Line="127" Column="1" TopLine="108"/>
       </Position20>
       <Position21>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="112" Column="3" TopLine="108"/>
+        <Caret Line="129" Column="3" TopLine="111"/>
       </Position21>
       <Position22>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="127" Column="1" TopLine="108"/>
+        <Caret Line="128" Column="1" TopLine="111"/>
       </Position22>
       <Position23>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="129" Column="3" TopLine="111"/>
+        <Caret Line="129" Column="1" TopLine="111"/>
       </Position23>
       <Position24>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="128" Column="1" TopLine="111"/>
+        <Caret Line="120" Column="71" TopLine="94"/>
       </Position24>
       <Position25>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="129" Column="1" TopLine="111"/>
+        <Caret Line="127" Column="1" TopLine="96"/>
       </Position25>
       <Position26>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="120" Column="71" TopLine="94"/>
+        <Caret Line="128" Column="7" TopLine="103"/>
       </Position26>
       <Position27>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="127" Column="1" TopLine="96"/>
+        <Caret Line="134" Column="3" TopLine="130"/>
       </Position27>
       <Position28>
         <Filename Value="utablemanager.pas"/>
-        <Caret Line="128" Column="7" TopLine="103"/>
-      </Position28>
-      <Position29>
-        <Filename Value="utablemanager.pas"/>
-        <Caret Line="134" Column="3" TopLine="130"/>
-      </Position29>
-      <Position30>
-        <Filename Value="utablemanager.pas"/>
         <Caret Line="136" Column="55" TopLine="115"/>
-      </Position30>
+      </Position28>
     </JumpHistory>
   </ProjectSession>
   <EditorMacros Count="0"/>

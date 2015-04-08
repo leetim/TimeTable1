@@ -15,14 +15,14 @@ type
 
   TTimeTableForm = class(TForm)
     ExcecuteStatementButton: TButton;
-    MainMenu1: TMainMenu;
+    MainMenu: TMainMenu;
     FileItem: TMenuItem;
     AboutItem: TMenuItem;
     CodeMemo: TSynMemo;
     LogsMemo: TMemo;
+    TabelsItem: TMenuItem;
     SQLTransaction: TSQLTransaction;
     SynSQLSyn1: TSynSQLSyn;
-    TabelsItem: TMenuItem;
     ExitItem: TMenuItem;
     procedure AboutItemClick(Sender: TObject);
     procedure ExcecuteStatementButtonClick(Sender: TObject);

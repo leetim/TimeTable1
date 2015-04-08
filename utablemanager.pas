@@ -6,13 +6,29 @@ interface
 
 uses
   Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls, UMeta, sqldb,
-  DBGrids;
+  DBGrids, StdCtrls, ExtCtrls;
 
 const
   Indent = 5;
   ScrollLength = 20;
 
 type
+
+  { TFilter }
+
+  TFilter = class
+    private
+      FPanel: TPanel;
+      FTable: TMyTable;
+      FControls: array of TWinControl;
+      FOperationBox, FFieldBox: TComboBox;
+      FConstEdit: TEdit;
+      FDeleteButton: TButton;
+      function AddControl(AControl: TWinControl): TWinControl;
+    public
+      constructor Create(ASelf: TComponent; ATable: TMyTable);
+      destructor Destroy();
+  end;
 
   { TTableManager }
 
@@ -77,6 +93,40 @@ begin
       AddRefrenceTableManager(t)
     else
       AddTableManager(t);
+end;
+
+{ TFilter }
+
+function TFilter.AddControl(AControl: TWinControl): TWinControl;
+begin
+  SetLength(FControls, Length(FControls) + 1);
+  FControls[High(FControls)] := AControl;
+  Result := AControl;
+end;
+
+constructor TFilter.Create(ASelf: TComponent; ATable: TMyTable);
+var
+  i: integer;
+  c: TWinControl;
+begin
+  FTable := ATable;
+  FFieldBox := AddControl(TComboBox.Create(ASelf)) as TComboBox;
+  with FFieldBox do
+    for i := 0 to ATable.MaxIndex do
+      FFieldBox.Items.Add(ATable.Fields[i].Caption);
+  FOperationBox := AddControl(TComboBox.Create(ASelf)) as TComboBox;
+  FConstEdit := AddControl(TEdit.Create(ASelf)) as TEdit;
+  FDeleteButton := AddControl(TButton.Create(ASelf)) as TButton;
+  for c in FControls do
+    c.Parent := FPanel;
+end;
+
+destructor TFilter.Destroy;
+var
+  c: TWinControl;
+begin
+  for c in FControls do
+    c.Free;
 end;
 
 { TRefrenceTableManager }
