@@ -62,7 +62,7 @@ end;
 procedure TTimeTableForm.ExceptionHandler(Sender: TObject; E: Exception);
 begin
   LogsMemo.Lines.Add(E.Message);
-  If TableForm.Visible then TableForm.Close;
+  If (TableForm <> nil) and TableForm.Visible then TableForm.Close;
 end;
 
 procedure TTimeTableForm.ExcecuteStatementButtonClick(Sender: TObject);

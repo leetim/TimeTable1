@@ -188,6 +188,7 @@ type
       function GetWidth(): integer; override;
     protected
       FRefrences: TMyTableArray;
+      FRefrencesFields: TMyFieldsArray;
     public
       property Refrences: TMyTableArray read FRefrences;
   end;
