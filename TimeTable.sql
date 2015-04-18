@@ -1,4 +1,4 @@
-CREATE DATEBASE 'localhost:C:\DB\TimeTable\TEST.FDB' user 'SYSDBA' password 'masterserver';
+CREATE DATEBASE 'localhost:C:\DB\TEST.FDB' user 'SYSDBA' password 'masterserver';
 
 CREATE TABLE teachers(
 	id integer primary key,
@@ -49,7 +49,7 @@ CREATE TABLE lessons(
 	teacher_id integer
 	);
 
---Преподаватели	
+--РџСЂРµРїРѕРґР°РІР°С‚РµР»Рё	
 INSERT INTO teachers VALUES (100, 'Juplev Anton Sergeevich');
 INSERT INTO teachers VALUES (101, 'Sporyshev Maksim Sergeevich');
 INSERT INTO teachers VALUES (102, 'Pak Gennadiy Konstantinovich');
@@ -68,13 +68,13 @@ INSERT INTO teachers VALUES (114, 'Brizitskiy Roman Viktorovich');
 INSERT INTO teachers VALUES (115, 'Pinko Irina Viktorovna');
 INSERT INTO teachers VALUES (116, 'Kravcov Dmitriy Sergeevich');
 
---Группы
+--Р“СЂСѓРїРїС‹
 INSERT INTO groups VALUES (200, 'b8103a1');
 INSERT INTO groups VALUES (201, 'b8103a2');
 INSERT INTO groups VALUES (202, 'b8203a1');
 INSERT INTO groups VALUES (203, 'b8203a2');
 
---Предметы
+--РџСЂРµРґРјРµС‚С‹
 INSERT INTO subjects VALUES (300, 'Algebra and Geometry');
 INSERT INTO subjects VALUES (301, 'Mathematical analysis');
 INSERT INTO subjects VALUES (302, 'Workshop on Computer');
@@ -92,7 +92,7 @@ INSERT INTO subjects VALUES (313, 'Numerical Methods');
 INSERT INTO subjects VALUES (314, 'Life safety');
 INSERT INTO subjects VALUES (315, 'Economic theory');
 
---Аудитории
+--РђСѓРґРёС‚РѕСЂРёРё
 INSERT INTO classrooms VALUES (401, 'D401');
 INSERT INTO classrooms VALUES (402, 'D402');
 INSERT INTO classrooms VALUES (403, 'D403');
@@ -108,7 +108,7 @@ INSERT INTO classrooms VALUES (412, 'D412');
 INSERT INTO classrooms VALUES (413, 'D413');
 INSERT INTO classrooms VALUES (414, 'D414');
 
---Дни недели
+--Р”РЅРё РЅРµРґРµР»Рё
 INSERT INTO weekday VALUES (501, 'Mon');
 INSERT INTO weekday VALUES (502, 'Tue');
 INSERT INTO weekday VALUES (503, 'Wed');
@@ -117,7 +117,7 @@ INSERT INTO weekday VALUES (505, 'Fri');
 INSERT INTO weekday VALUES (506, 'Sat');
 INSERT INTO weekday VALUES (507, 'Sun');
 
---Пары (номера уроков на в определенный день недели)
+--РџР°СЂС‹ (РЅРѕРјРµСЂР° СѓСЂРѕРєРѕРІ РЅР° РІ РѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё)
 INSERT INTO pair VALUES (1, 1);
 INSERT INTO pair VALUES (2, 2);
 INSERT INTO pair VALUES (3, 3);
@@ -127,7 +127,7 @@ INSERT INTO pair VALUES (6, 6);
 INSERT INTO pair VALUES (7, 7);
 INSERT INTO pair VALUES (8, 8);
 
---Отношение Группы-Предметы
+--РћС‚РЅРѕС€РµРЅРёРµ Р“СЂСѓРїРїС‹-РџСЂРµРґРјРµС‚С‹
 INSERT INTO groups_subjects VALUES (200, 300);
 INSERT INTO groups_subjects VALUES (200, 301);
 INSERT INTO groups_subjects VALUES (200, 302);
@@ -181,7 +181,7 @@ INSERT INTO groups_subjects VALUES (203, 312);
 INSERT INTO groups_subjects VALUES (203, 313);
 INSERT INTO groups_subjects VALUES (203, 314);
 
---Отношение Преподаватели-Предметы
+--РћС‚РЅРѕС€РµРЅРёРµ РџСЂРµРїРѕРґР°РІР°С‚РµР»Рё-РџСЂРµРґРјРµС‚С‹
 INSERT INTO teachers_subjects VALUES (100, 302);
 INSERT INTO teachers_subjects VALUES (101, 303);
 INSERT INTO teachers_subjects VALUES (102, 300);
@@ -200,9 +200,9 @@ INSERT INTO teachers_subjects VALUES (114, 314);
 INSERT INTO teachers_subjects VALUES (115, 315);
 INSERT INTO teachers_subjects VALUES (116, 305);
 
---Первые 2 группы
---Уроки
---Понедельник
+--РџРµСЂРІС‹Рµ 2 РіСЂСѓРїРїС‹
+--РЈСЂРѕРєРё
+--РџРѕРЅРµРґРµР»СЊРЅРёРє
 INSERT INTO lessons VALUES(1, 501, 200, 302, 401, 100);
 INSERT INTO lessons VALUES(1, 501, 201, 302, 402, 106);
 INSERT INTO lessons VALUES(2, 501, 200, 302, 401, 100);
@@ -210,7 +210,7 @@ INSERT INTO lessons VALUES(2, 501, 201, 302, 402, 106);
 INSERT INTO lessons VALUES(3, 501, 200, 303, 403, 101);
 INSERT INTO lessons VALUES(4, 501, 200, 303, 403, 101);
 
---Вторник
+--Р’С‚РѕСЂРЅРёРє
 INSERT INTO lessons VALUES(1, 502, 200, 300, 401, 102);
 INSERT INTO lessons VALUES(1, 502, 201, 300, 401, 102);
 INSERT INTO lessons VALUES(2, 502, 200, 306, 402, 102);
@@ -220,7 +220,7 @@ INSERT INTO lessons VALUES(3, 502, 201, 301, 403, 103);
 INSERT INTO lessons VALUES(4, 502, 200, 306, 401, 102);
 INSERT INTO lessons VALUES(4, 502, 201, 306, 401, 102);
 
---Среда
+--РЎСЂРµРґР°
 INSERT INTO lessons VALUES(2, 503, 200, 306, 401, 102);
 INSERT INTO lessons VALUES(2, 503, 201, 306, 401, 102);
 INSERT INTO lessons VALUES(3, 503, 200, 300, 401, 102);
@@ -230,7 +230,7 @@ INSERT INTO lessons VALUES(4, 503, 201, 300, 403, 102);
 INSERT INTO lessons VALUES(5, 503, 200, 304, 414, 108);
 INSERT INTO lessons VALUES(5, 503, 201, 304, 414, 108);
 
---Четверг
+--Р§РµС‚РІРµСЂРі
 INSERT INTO lessons VALUES(1, 504, 200, 307, 401, 104);
 INSERT INTO lessons VALUES(1, 504, 201, 307, 401, 104);
 INSERT INTO lessons VALUES(2, 504, 200, 307, 402, 104);
@@ -238,13 +238,13 @@ INSERT INTO lessons VALUES(2, 504, 201, 303, 403, 101);
 INSERT INTO lessons VALUES(3, 504, 200, 303, 404, 105);
 INSERT INTO lessons VALUES(3, 504, 201, 303, 404, 105);
 
---Пятница
+--РџСЏС‚РЅРёС†Р°
 INSERT INTO lessons VALUES(2, 505, 200, 301, 401, 103);
 INSERT INTO lessons VALUES(2, 505, 201, 301, 401, 103);
 INSERT INTO lessons VALUES(3, 505, 200, 301, 402, 103);
 INSERT INTO lessons VALUES(3, 505, 201, 301, 402, 103);
 
---Суббота
+--РЎСѓР±Р±РѕС‚Р°
 INSERT INTO lessons VALUES(2, 506, 201, 307, 401, 104);
 INSERT INTO lessons VALUES(3, 506, 201, 307, 401, 104);
 INSERT INTO lessons VALUES(4, 506, 200, 305, 403, 107);
@@ -252,8 +252,8 @@ INSERT INTO lessons VALUES(4, 506, 201, 305, 403, 107);
 INSERT INTO lessons VALUES(5, 506, 200, 304, 414, 108);
 INSERT INTO lessons VALUES(5, 506, 201, 304, 414, 108);
 
---Вторые 2 группы
---Понедельник
+--Р’С‚РѕСЂС‹Рµ 2 РіСЂСѓРїРїС‹
+--РџРѕРЅРµРґРµР»СЊРЅРёРє
 INSERT INTO lessons VALUES(1, 501, 202, 308, 405, 109);
 INSERT INTO lessons VALUES(1, 501, 203, 308, 405, 109);
 INSERT INTO lessons VALUES(2, 501, 202, 308, 405, 109);
@@ -265,11 +265,11 @@ INSERT INTO lessons VALUES(4, 501, 203, 309, 408, 100);
 INSERT INTO lessons VALUES(5, 501, 202, 302, 407, 104);
 INSERT INTO lessons VALUES(5, 501, 203, 309, 408, 100);
 
---Вторник
+--Р’С‚РѕСЂРЅРёРє
 INSERT INTO lessons VALUES(5, 502, 202, 304, 414, 108);
 INSERT INTO lessons VALUES(5, 502, 203, 304, 414, 108);
 
---Среда
+--РЎСЂРµРґР°
 INSERT INTO lessons VALUES(1, 503, 202, 310, 406, 110);
 INSERT INTO lessons VALUES(1, 503, 203, 310, 406, 110);
 INSERT INTO lessons VALUES(2, 503, 202, 311, 405, 111);
@@ -281,7 +281,7 @@ INSERT INTO lessons VALUES(4, 503, 203, 310, 407, 110);
 INSERT INTO lessons VALUES(5, 503, 202, 305, 406, 112);
 INSERT INTO lessons VALUES(5, 503, 203, 305, 406, 112);
 
---Четверг
+--Р§РµС‚РІРµСЂРі
 INSERT INTO lessons VALUES(1, 504, 202, 312, 405, 103);
 INSERT INTO lessons VALUES(1, 504, 203, 312, 405, 103);
 INSERT INTO lessons VALUES(2, 504, 202, 313, 406, 113);
@@ -293,7 +293,7 @@ INSERT INTO lessons VALUES(4, 504, 203, 313, 408, 114);
 INSERT INTO lessons VALUES(5, 504, 202, 314, 409, 115);
 INSERT INTO lessons VALUES(5, 504, 203, 314, 409, 115);
 
---Пятница
+--РџСЏС‚РЅРёС†Р°
 INSERT INTO lessons VALUES(1, 505, 202, 309, 405, 100);
 INSERT INTO lessons VALUES(1, 505, 203, 302, 405, 104);
 INSERT INTO lessons VALUES(2, 505, 202, 309, 405, 100);
@@ -303,4 +303,10 @@ INSERT INTO lessons VALUES(3, 505, 203, 315, 406, 116);
 INSERT INTO lessons VALUES(5, 505, 202, 304, 414, 108);
 INSERT INTO lessons VALUES(5, 505, 203, 304, 414, 108);
 
---Суббота
+--РЎСѓР±Р±РѕС‚Р°
+
+
+
+
+
+	

@@ -1,11 +1,11 @@
 object TableForm: TTableForm
-  Left = 431
-  Height = 489
-  Top = 67
-  Width = 766
+  Left = 350
+  Height = 480
+  Top = 174
+  Width = 799
   Caption = 'Запрос'
-  ClientHeight = 489
-  ClientWidth = 766
+  ClientHeight = 480
+  ClientWidth = 799
   Constraints.MinHeight = 400
   Constraints.MinWidth = 665
   OnCreate = FormCreate
@@ -15,11 +15,10 @@ object TableForm: TTableForm
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = FilterPanel
     Left = 5
-    Height = 275
+    Height = 266
     Top = 5
-    Width = 756
+    Width = 789
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
@@ -37,7 +36,7 @@ object TableForm: TTableForm
     AnchorSideBottom.Side = asrBottom
     Left = 5
     Height = 61
-    Top = 423
+    Top = 414
     Width = 478
     Anchors = [akLeft, akBottom]
     BevelOuter = bvNone
@@ -53,70 +52,55 @@ object TableForm: TTableForm
     ClientHeight = 61
     ClientWidth = 478
     DataSource = DataSource
+    OnClick = DBNavigatorClick
     Options = []
     TabOrder = 1
-  end
-  object FilterPanel: TPanel
-    AnchorSideLeft.Control = Owner
-    AnchorSideRight.Control = ScrollBar1
-    AnchorSideBottom.Control = DBNavigator
-    Left = 5
-    Height = 133
-    Top = 285
-    Width = 734
-    Anchors = [akLeft, akRight, akBottom]
-    BorderSpacing.Around = 5
-    TabOrder = 2
   end
   object AddFilterButton: TButton
     AnchorSideLeft.Control = DBNavigator
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = FilterPanel
     AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = FilterPanel
     AnchorSideRight.Side = asrBottom
     Left = 488
     Height = 25
-    Top = 423
+    Top = 414
     Width = 169
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
     Caption = 'Добавить фильтр'
-    TabOrder = 3
-  end
-  object ScrollBar1: TScrollBar
-    AnchorSideLeft.Control = FilterPanel
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = FilterPanel
-    AnchorSideBottom.Control = FilterPanel
-    AnchorSideBottom.Side = asrBottom
-    Left = 744
-    Height = 133
-    Top = 285
-    Width = 17
-    Anchors = [akTop, akBottom]
-    Kind = sbVertical
-    Max = 999
-    PageSize = 1000
-    TabOrder = 4
-    OnChange = ScrollBar1Change
+    TabOrder = 2
   end
   object ApplyButton: TBitBtn
     AnchorSideLeft.Control = DBNavigator
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = AddFilterButton
     AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = FilterPanel
     AnchorSideRight.Side = asrBottom
     Left = 488
     Height = 25
-    Top = 453
+    Top = 444
     Width = 169
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
     Caption = 'Применить фильтр'
     Enabled = False
-    TabOrder = 5
+    TabOrder = 3
+  end
+  object FilterPanel: TScrollBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = DBNavigator
+    Left = 5
+    Height = 133
+    Top = 276
+    Width = 789
+    HorzScrollBar.Page = 1
+    VertScrollBar.Page = 1
+    Anchors = [akLeft, akRight, akBottom]
+    BorderSpacing.Around = 5
+    TabOrder = 4
   end
   object SQLQuery: TSQLQuery
     FieldDefs = <>

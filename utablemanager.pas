@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Menus, Controls, UTable, Forms, DbCtrls, UMeta, sqldb,
-  DBGrids, StdCtrls, ExtCtrls;
+  DBGrids, StdCtrls, ExtCtrls,  Buttons;
 
 type
 
@@ -38,7 +38,7 @@ type
       function GetFiltredConst(): string;
     public
       constructor Create(ATable: TMyTable);
-      function MakePenel(ASelf: TWinControl): TPanel;
+      function MakePanel(ASelf: TWinControl): TPanel;
       property DeleteEvent: TDeleteEvent write FDeleteEvent;
       property Tag: integer write FTag;
       property FieldName: string read GetFieldName;
@@ -196,13 +196,13 @@ begin
   FApplied := False;
 end;
 
-function TFilter.MakePenel(ASelf: TWinControl): TPanel;
+function TFilter.MakePanel(ASelf: TWinControl): TPanel;
 var
   Controls: array of TWinControl;
   c: TWinControl;
   OperationBox, FieldBox: TComboBox;
   ConstEdit: TEdit;
-  DeleteButton: TButton;
+  DeleteButton: TBitBtn;
   i: integer;
 
   function AddControl(AControl: TWinControl): TWinControl;
@@ -261,8 +261,13 @@ begin
       Height := 25;
       OnChange := @OnConstChange;
     end;
-    DeleteButton := AddControl(TButton.Create(ASelf)) as TButton;
+    DeleteButton := AddControl(TBitBtn.Create(ASelf)) as TBitBtn;
     with DeleteButton do begin
+      try
+        Glyph.LoadFromFile('Del.bmp');
+      except
+        Caption := 'X';
+      end;
       Left := 415;
       Top := Indent;
       Width := 25;
@@ -405,29 +410,27 @@ end;
 procedure TTableManager.AddFilterEvent(Sender: TObject);
 var
   f: TPanel;
+  hf: integer;
 begin
   FForm.ApplyButton.Enabled := True;
   SetLength(FFilters, Length(FFilters) + 1);
-  FFilters[High(FFilters)] := TFilter.Create(FTable);
+  hf := High(FFilters);
+  FFilters[hf] := TFilter.Create(FTable);
   with FForm do begin
-    SetLength(FPanels, Length(FFilters) + 1);
-    FPanels[High(FPanels)] := FFilters[High(FFilters)].MakePenel(FForm);
-    FPanels[High(FPanels)].Top := Indent + High(FFilters) * (PanelHeight + Indent)
-      - FIndentPanel;
-    FPanels[High(FPanels)].Parent := FForm.FilterPanel;
+    SetLength(FPanels, Length(FFilters));
+    FPanels[hf] := FFilters[hf].MakePanel(FForm);
+    FPanels[hf].Top := Indent + hf * (PanelHeight + Indent);
+    FPanels[hf].Parent := FForm.FilterPanel;
   end;
-  with FFilters[High(FFilters)] do begin
-    Tag := High(FFilters);
+  with FFilters[hf] do begin
+    Tag := hf;
     DeleteEvent := @DeleteFilterEvent;
     ChangeEvent := @ChangeFilterEvent;
   end;
-  If Length(FDeletedPanels) <> 0 then
+  If Length(FDeletedPanels) <> 0 then begin
     for f in FDeletedPanels do
       FreeAndNil(f);
-  with FForm do begin
-    ScrollBar1.PageSize := round(FilterPanel.Height / (Length(FPanels) *
-      (PanelHeight + Indent) + Indent) * 1000);
-    //ScrollBar1.OnChange(ScrollBar1);
+    SetLength(FDeletedPanels, 0);
   end;
 end;
 
@@ -447,7 +450,7 @@ begin
       FPanels[i] := FPanels[i + 1];
     end;
   SetLength(FFilters, Length(FFilters) - 1);
-  SetLength(FForm.FPanels, Length(FFilters) - 1);
+  SetLength(FForm.FPanels, Length(FFilters));
   for i := 0 to High(FFilters) do
     with FForm.FPanels[i] do begin
       Top := Indent + i * (PanelHeight + Indent);
