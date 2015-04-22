@@ -1,11 +1,11 @@
 object TableForm: TTableForm
   Left = 350
-  Height = 480
+  Height = 497
   Top = 174
-  Width = 799
+  Width = 671
   Caption = 'Запрос'
-  ClientHeight = 480
-  ClientWidth = 799
+  ClientHeight = 497
+  ClientWidth = 671
   Constraints.MinHeight = 400
   Constraints.MinWidth = 665
   OnCreate = FormCreate
@@ -16,9 +16,9 @@ object TableForm: TTableForm
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 5
-    Height = 266
+    Height = 283
     Top = 5
-    Width = 789
+    Width = 661
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
@@ -36,7 +36,7 @@ object TableForm: TTableForm
     AnchorSideBottom.Side = asrBottom
     Left = 5
     Height = 61
-    Top = 414
+    Top = 431
     Width = 478
     Anchors = [akLeft, akBottom]
     BevelOuter = bvNone
@@ -64,7 +64,7 @@ object TableForm: TTableForm
     AnchorSideRight.Side = asrBottom
     Left = 488
     Height = 25
-    Top = 414
+    Top = 431
     Width = 169
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
@@ -79,7 +79,7 @@ object TableForm: TTableForm
     AnchorSideRight.Side = asrBottom
     Left = 488
     Height = 25
-    Top = 444
+    Top = 461
     Width = 169
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
@@ -94,8 +94,8 @@ object TableForm: TTableForm
     AnchorSideBottom.Control = DBNavigator
     Left = 5
     Height = 133
-    Top = 276
-    Width = 789
+    Top = 293
+    Width = 661
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Anchors = [akLeft, akRight, akBottom]

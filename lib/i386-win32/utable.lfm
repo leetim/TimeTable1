@@ -1,0 +1,138 @@
+object TableForm: TTableForm
+  Left = 431
+  Height = 508
+  Top = 67
+  Width = 665
+  Caption = 'Запрос'
+  ClientHeight = 508
+  ClientWidth = 665
+  Constraints.MinHeight = 400
+  Constraints.MinWidth = 665
+  OnCreate = FormCreate
+  LCLVersion = '1.2.6.0'
+  object DBGrid: TDBGrid
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = FilterPanel
+    Left = 5
+    Height = 294
+    Top = 5
+    Width = 655
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    BorderSpacing.Right = 5
+    BorderSpacing.Bottom = 5
+    Color = clWindow
+    Columns = <>
+    DataSource = DataSource
+    TabOrder = 0
+    OnTitleClick = DBGridTitleClick
+  end
+  object DBNavigator: TDBNavigator
+    AnchorSideLeft.Control = Owner
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 5
+    Height = 61
+    Top = 442
+    Width = 478
+    Anchors = [akLeft, akBottom]
+    BevelOuter = bvNone
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 5
+    BorderSpacing.Bottom = 5
+    ChildSizing.EnlargeHorizontal = crsScaleChilds
+    ChildSizing.EnlargeVertical = crsScaleChilds
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 100
+    ClientHeight = 61
+    ClientWidth = 478
+    DataSource = DataSource
+    Options = []
+    TabOrder = 1
+  end
+  object FilterPanel: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = ScrollBar1
+    AnchorSideBottom.Control = DBNavigator
+    Left = 5
+    Height = 133
+    Top = 304
+    Width = 635
+    Anchors = [akLeft, akRight, akBottom]
+    BorderSpacing.Around = 5
+    TabOrder = 2
+  end
+  object AddFilterButton: TButton
+    AnchorSideLeft.Control = DBNavigator
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = FilterPanel
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = FilterPanel
+    AnchorSideRight.Side = asrBottom
+    Left = 488
+    Height = 25
+    Top = 442
+    Width = 169
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    Caption = 'Добавить фильтр'
+    TabOrder = 3
+  end
+  object ScrollBar1: TScrollBar
+    AnchorSideLeft.Control = FilterPanel
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = FilterPanel
+    AnchorSideBottom.Control = FilterPanel
+    AnchorSideBottom.Side = asrBottom
+    Left = 645
+    Height = 133
+    Top = 304
+    Width = 17
+    Anchors = [akTop, akBottom]
+    Kind = sbVertical
+    Max = 999
+    PageSize = 1000
+    TabOrder = 4
+    OnChange = ScrollBar1Change
+  end
+  object ApplyButton: TBitBtn
+    AnchorSideLeft.Control = DBNavigator
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = AddFilterButton
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = FilterPanel
+    AnchorSideRight.Side = asrBottom
+    Left = 488
+    Height = 25
+    Top = 472
+    Width = 169
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    Caption = 'Применить фильтр'
+    Enabled = False
+    TabOrder = 5
+  end
+  object SQLQuery: TSQLQuery
+    FieldDefs = <>
+    Database = ConnectionModule.ConnectionComponent
+    Transaction = TimeTableForm.SQLTransaction
+    DeleteSQL.Strings = (
+      'SELECT *'
+      'FROM TEACHERS;'
+    )
+    Params = <>
+    left = 544
+    top = 560
+  end
+  object DataSource: TDataSource
+    DataSet = SQLQuery
+    left = 496
+    top = 552
+  end
+end
