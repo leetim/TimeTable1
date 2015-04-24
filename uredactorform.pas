@@ -19,13 +19,13 @@ type
   { TRedactorForm }
 
   TRedactorForm = class(TForm)
-    ActionButton: TButton;
     Label1: TLabel;
     Label2: TLabel;
     procedure FormCreate(Sender: TObject);
   private
     { private declarations }
   public
+    FActionButton: TButton;
     FLables: array of TLabel;
     FEdits: array of TWinControl;
   end;

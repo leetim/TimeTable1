@@ -89,6 +89,7 @@
         <Filename Value="uredactorform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="RedactorForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uRedactorForm"/>
       </Unit6>

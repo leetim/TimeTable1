@@ -1,7 +1,7 @@
 object TimeTableForm: TTimeTableForm
-  Left = 409
+  Left = 297
   Height = 458
-  Top = 161
+  Top = 66
   Width = 745
   Caption = 'Редактор расписания'
   ClientHeight = 438

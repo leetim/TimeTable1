@@ -54,13 +54,18 @@ type
     private
       FForm: TTableForm;
       FRedactorForm: TRedactorForm;
+      FRedactorPanel: TPanel;
       FTable: TMyTable;
       FMenuItemLink: TMenuItem;
       FOrderedField: TMyField;
       FDesc: Boolean;
       FFilters: array of TFilter;
       FDeletedPanels: array of TPanel;
+      FRecord: array of String;
       procedure MakeForm(); virtual;
+      procedure PrepareFormForInsert();
+      procedure PrepareFormForUpdate();
+      procedure RefreshPanel();
       procedure Refresh(); virtual;
       procedure AddFilterEvent(Sender: TObject);
       procedure DeleteFilterEvent(AIndex: Integer);
@@ -72,9 +77,12 @@ type
       procedure OnCloseEvent(Sender: TObject; var CloseAction: TCloseAction);
       procedure OnTitleClickEvent(Column: TColumn); virtual; abstract;
       procedure OnInsertEvent(Sender: TObject);
+      procedure OnDeleteEvent(Sender: TObject);
+      procedure OnUpdateEvent(Sender: TObject);
       procedure Apply(Sender: TObject);
       function GetSQLCode(): string; virtual;
       function GetSQLInsertCode(): string; virtual;
+      function GetSQLUpdateCode(AFieldIndex: Integer): string; virtual;
     public
       constructor Create(ATable: TMyTable); virtual;
       function GetMenuItem(AParent: TControl): TMenuItem;
@@ -86,9 +94,13 @@ type
     private
       FOrderedFieldPerentTable: TMyTable;
       FRefrences: TMyTableArray;
-      FIDs: array of string;
+      FIDs: array of array of string;
       procedure Refresh; override;
       function GetSQLCode: string; override;
+      function GetSQLInsertCode: string; override;
+      function GetSQLUpdateCode(AFieldIndex: Integer): string; override;
+      function GetSubSelectCode(ATable: TMyTable; AFieldIndex: integer;
+        AFieldValue: string): string;
       function GetEditControl(AField: TMyField): TWinControl; override;
       procedure OnTitleClickEvent(Column: TColumn); override;
     public
@@ -103,6 +115,7 @@ type
       function GetSQLCode: string; override;
       function GetEditControl(AField: TMyField): TWinControl; override;
       function GetSQLInsertCode(): string; override;
+      function GetSQLUpdateCode(AFieldIndex: Integer): string; override;
       procedure OnTitleClickEvent(Column: TColumn);
   end;
 
@@ -112,6 +125,7 @@ type
 
 var
   TableManagers: array of TTableManager;
+  TransactionComponent: TSQLTransaction;
 
 implementation
 
@@ -189,6 +203,21 @@ begin
       Result += ', ';
   end;
   Result += ');';
+end;
+
+function TWithoutRefrenceTableManager.GetSQLUpdateCode(AFieldIndex: Integer
+  ): string;
+var
+  i: integer;
+begin
+  Result := inherited GetSQLUpdateCode(AFieldIndex);
+  Result += (FRedactorForm.FEdits[High(FRedactorForm.FEdits)] as TEdit).Text
+    + ' WHERE ' ;
+  for i := 0 to FTable.MaxIndex do begin
+    Result += FTable.Fields[i].Name + ' = ' + FRecord[i];
+    If i <> FTable.MaxIndex then
+      Result += ' AND ';
+  end;
 end;
 
 procedure TWithoutRefrenceTableManager.OnTitleClickEvent(Column: TColumn);
@@ -315,7 +344,6 @@ begin
     end;
     OperationBox := AddControl(TComboBox.Create(ASelf)) as TComboBox;
     with OperationBox do begin
-      //Items.Add('...');
       Items.Add('Равно');
       Items.Add('Больше');
       Items.Add('Меньше');
@@ -396,11 +424,51 @@ begin
   end;
 end;
 
+function TRefrenceTableManager.GetSQLInsertCode: string;
+var
+  i: integer;
+  c: TComboBox;
+begin
+  Result := inherited GetSQLInsertCode();
+  for i := 0 to High(FRedactorForm.FEdits) do begin
+    c := FRedactorForm.FEdits[i] as TComboBox;
+    Result += FIDs[i, c.ItemIndex];
+    if i <> High(FRedactorForm.FEdits) then
+      Result += ', ';
+  end;
+  Result += ');';
+end;
+
+function TRefrenceTableManager.GetSQLUpdateCode(AFieldIndex: Integer): string;
+var
+  h: integer;
+  c: TComboBox;
+begin
+  h := High(FRedactorForm.FEdits);
+  Result := inherited GetSQLUpdateCode(AFieldIndex);
+  c := (FRedactorForm.FEdits[h] as TComboBox);
+  Result += FIDs[h, c.ItemIndex] +
+    ' WHERE ' + FTable.Fields[AFieldIndex].Name + ' = ' + GetSubSelectCode(
+    FRefrences[AFieldIndex], 1, FForm.DataSource.DataSet.
+    Fields.Fields[AFieldIndex].AsString);
+end;
+
+function TRefrenceTableManager.GetSubSelectCode(ATable: TMyTable;
+  AFieldIndex: integer; AFieldValue: string): string;
+begin
+  with ATable do
+    Result := '(SELECT a.' + Fields[0].Name + ' FROM ' + Name + ' a  WHERE a.'
+      + Fields[AFieldIndex].Name + ' = ' + AFieldValue + ')';
+end;
+
 function TRefrenceTableManager.GetEditControl(AField: TMyField): TWinControl;
 var
   i: integer;
+  h: integer;
 begin
   Result := TComboBox.Create(FRedactorForm);
+  SetLength(FIDs, Length(FIDs) + 1);
+  h := High(FIDs);
   with (Result as TComboBox) do begin
     FForm.SQLQuery.Close;
     FForm.SQLQuery.SQL.Clear;
@@ -408,9 +476,9 @@ begin
       FForm.SQLQuery.SQL.Text := 'SELECT * FROM ' + Name;
     FForm.SQLQuery.Open;
     while not FForm.SQLQuery.EOF do begin
-      SetLength(FIDs, Length(FIDs) + 1);
+      SetLength(FIDs[h], Length(FIDs[h]) + 1);
       Items.Add(FForm.SQLQuery.Fields[1].AsString);
-      FIDs[High(FIDs)] := FForm.SQLQuery.Fields[0].AsString;
+      FIDs[h, High(FIDs[h])] := FForm.SQLQuery.Fields[0].AsString;
       FForm.SQLQuery.Next;
     end;
     ReadOnly := True;
@@ -452,6 +520,110 @@ begin
     Width := FTable.Width + 2 * Indent + ScrollLength;
     AddFilterButton.OnClick := @AddFilterEvent;
     ApplyButton.OnClick := @Apply;
+  end;
+end;
+
+procedure TTableManager.PrepareFormForInsert();
+var
+  i, j: integer;
+  f: TMyField;
+begin
+  with FRedactorForm do begin
+    Caption := 'Редактор для ' + FTable.Caption;
+    for i := 0 to FTable.MaxIndex do begin
+      f := FTable.Fields[i];
+      SetLength(FLables, Length(FLables) + 1);
+      SetLength(FEdits, Length(FEdits) + 1);
+      FLables[High(FLables)] := TLabel.Create(FRedactorForm);
+      with FLables[High(FLables)] do begin
+        Caption := f.Caption;
+        Parent := FRedactorPanel;
+        Left := Indent;
+        Top := Indent + (LableHeight + Indent) * i;
+        Width := LableWidth;
+        Height := LableHeight;
+      end;
+      FEdits[High(FEdits)] := Self.GetEditControl(f);
+      with FEdits[High(FEdits)] do begin
+      Parent := FRedactorPanel;
+        Width := EditWidth;
+        Height := EditHight;
+        Left := 2 * Indent + LableWidth;
+        Top := Indent + (LableHeight + Indent) * i;
+      end;
+    end;
+    FActionButton := TButton.Create(FRedactorForm);
+    with FActionButton do begin
+      Top := Indent + (LableHeight + Indent) * (i + 1);
+      Parent := FRedactorPanel;
+      Left := Indent;
+      Height := 30;
+      Width := 100;
+      OnClick := @Self.OnInsertEvent;
+      Caption := 'Добавить';
+    end;
+  end;
+end;
+
+procedure TTableManager.PrepareFormForUpdate();
+var
+  i, r: integer;
+  f: TMyField;
+  s: string;
+begin
+  //if FForm.DBGrid.SelectedRows.Count = 0 then exit;
+  with FForm.DBGrid do begin
+    SetLength(FRecord, DataSource.DataSet.Fields.Count);
+    for i := 0 to High(FRecord) do
+      FRecord[i] := DataSource.DataSet.Fields.Fields[i].AsString;
+  end;
+  RefreshPanel();
+  with FRedactorForm do begin
+    Caption := 'Редактор для ' + FTable.Caption;
+      f := FTable.Fields[i];
+      SetLength(FLables,1);
+      SetLength(FEdits,1);
+      FLables[High(FLables)] := TLabel.Create(FRedactorForm);
+      with FLables[High(FLables)] do begin
+        Caption := f.Caption;
+        Parent := FRedactorPanel;
+        Left := Indent;
+        Top := Indent;
+        Width := LableWidth;
+        Height := LableHeight;
+      end;
+      FEdits[High(FEdits)] := Self.GetEditControl(f);
+      with FEdits[High(FEdits)] do begin
+      Parent := FRedactorPanel;
+        Width := EditWidth;
+        Height := EditHight;
+        Left := 2 * Indent + LableWidth;
+        Top := Indent;
+      end;
+    FActionButton := TButton.Create(FRedactorForm);
+    with FActionButton do begin
+      Top := Indent + (LableHeight + Indent);
+      Parent := FRedactorPanel;
+      Left := Indent;
+      Height := 30;
+      Width := 100;
+      OnClick := @Self.OnUpdateEvent;
+      Caption := 'Обновить';
+    end;
+  end;
+end;
+
+procedure TTableManager.RefreshPanel;
+begin
+  if FRedactorPanel <> nil then
+    FreeAndNil(FRedactorPanel);
+  FRedactorPanel := TPanel.Create(FRedactorForm);
+  With FRedactorPanel do begin
+    Top := Indent;
+    Left := Indent;
+    Width := FRedactorForm.Width - 2 * Indent;
+    Height := FRedactorForm.Height - 2 * Indent;
+    Parent := FRedactorForm;
   end;
 end;
 
@@ -549,39 +721,13 @@ var
   f: TMyField;
   i, j: integer;
 begin
-  If Button <> nbInsert then exit;
-  If FRedactorForm = nil then begin
+  If not (Button in [nbInsert, nbDelete, nbEdit]) then exit;
+  If FRedactorForm = nil then
     Application.CreateForm(TRedactorForm, FRedactorForm);
-    with FRedactorForm do begin
-      Caption := 'Редактор для ' + FTable.Caption;
-      for i := 0 to FTable.MaxIndex do begin
-        f := FTable.Fields[i];
-        SetLength(FLables, Length(FLables) + 1);
-        SetLength(FEdits, Length(FEdits) + 1);
-        FLables[High(FLables)] := TLabel.Create(FRedactorForm);
-        with FLables[High(FLables)] do begin
-          Caption := f.Caption;
-          Parent := FRedactorForm;
-          Left := Indent;
-          Top := 2 * Indent + (LableHeight + Indent) * i + LableHeight;
-          Width := LableWidth;
-          Height := LableHeight;
-        end;
-        FEdits[High(FEdits)] := Self.GetEditControl(f);
-        with FEdits[High(FEdits)] do begin
-          Parent := FRedactorForm;
-          Width := EditWidth;
-          Height := EditHight;
-          Left := 2 * Indent + LableWidth;
-          Top := 2 * Indent + (LableHeight + Indent) * i + LableHeight;
-        end;
-      end;
-      ActionButton.Top := 2 * Indent + (LableHeight + Indent) * (i + 1)
-        + LableHeight;
-      ActionButton.Left := Indent;
-    end;
+  case Button of
+    nbInsert: PrepareFormForInsert();
+    nbEdit: PrepareFormForUpdate();
   end;
-  FRedactorForm.ActionButton.OnClick := @Self.OnInsertEvent;
   FRedactorForm.ShowOnTop();
   Refresh();
 end;
@@ -599,9 +745,32 @@ begin
   with FForm.SQLQuery do begin
     Close;
     InsertSQL.Text := Self.GetSQLInsertCode();
-    Insert;
-    Refresh();
+    ExecSQL;
+    TransactionComponent.Commit;
   end;
+  Refresh();
+end;
+
+procedure TTableManager.OnDeleteEvent(Sender: TObject);
+begin
+  with FForm.SQLQuery do begin
+    Close;
+    SQL.Text := Self.GetSQLInsertCode();
+    ExecSQL;
+    TransactionComponent.Commit;
+  end;
+  Refresh();
+end;
+
+procedure TTableManager.OnUpdateEvent(Sender: TObject);
+begin
+  with FForm.SQLQuery do begin
+    Close;
+    SQL.Text := Self.GetSQLUpdateCode(1);
+    ExecSQL;
+    TransactionComponent.Commit;
+  end;
+  Refresh();
 end;
 
 procedure TTableManager.Apply(Sender: TObject);
@@ -637,6 +806,12 @@ end;
 function TTableManager.GetSQLInsertCode: string;
 begin
   Result := 'INSERT INTO ' + FTable.Name + ' VALUES(';
+end;
+
+function TTableManager.GetSQLUpdateCode(AFieldIndex: Integer): string;
+begin
+  Result := 'UPDATE ' + FTable.Name + ' SET ' + FTable.Fields[AFieldIndex].Name +
+    ' = ';
 end;
 
 constructor TTableManager.Create(ATable: TMyTable);

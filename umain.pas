@@ -57,6 +57,7 @@ begin
     SubTabelsItems[High(SubTabelsItems)] := t.GetMenuItem(Self);
     TabelsItem.Insert(High(SubTabelsItems), SubTabelsItems[High(SubTabelsItems)]);
   end;
+  TransactionComponent := SQLTransaction;
 end;
 
 procedure TTimeTableForm.ExceptionHandler(Sender: TObject; E: Exception);
