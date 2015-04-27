@@ -19,8 +19,6 @@ type
   { TRedactorForm }
 
   TRedactorForm = class(TForm)
-    Label1: TLabel;
-    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
   private
     { private declarations }
@@ -38,14 +36,7 @@ implementation
 
 procedure TRedactorForm.FormCreate(Sender: TObject);
 begin
-  with Label1 do begin
-    Top := Indent;
-    Left := Indent;
-  end;
-  with Label2 do begin
-    Top := Indent;
-    Left := 2 * Indent + LableWidth;
-  end;
+
 end;
 
 end.

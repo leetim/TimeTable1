@@ -62,6 +62,7 @@ type
       FFilters: array of TFilter;
       FDeletedPanels: array of TPanel;
       FRecord: array of String;
+      FColumn, FRow: integer;
       procedure MakeForm(); virtual;
       procedure PrepareFormForInsert();
       procedure PrepareFormForUpdate();
@@ -82,7 +83,7 @@ type
       procedure Apply(Sender: TObject);
       function GetSQLCode(): string; virtual;
       function GetSQLInsertCode(): string; virtual;
-      function GetSQLUpdateCode(AFieldIndex: Integer): string; virtual;
+      function GetSQLUpdateCode(AFieldIndex, AID: Integer): string; virtual;
     public
       constructor Create(ATable: TMyTable); virtual;
       function GetMenuItem(AParent: TControl): TMenuItem;
@@ -98,7 +99,7 @@ type
       procedure Refresh; override;
       function GetSQLCode: string; override;
       function GetSQLInsertCode: string; override;
-      function GetSQLUpdateCode(AFieldIndex: Integer): string; override;
+      function GetSQLUpdateCode(AFieldIndex, AID: Integer): string; override;
       function GetSubSelectCode(ATable: TMyTable; AFieldIndex: integer;
         AFieldValue: string): string;
       function GetEditControl(AField: TMyField): TWinControl; override;
@@ -115,7 +116,7 @@ type
       function GetSQLCode: string; override;
       function GetEditControl(AField: TMyField): TWinControl; override;
       function GetSQLInsertCode(): string; override;
-      function GetSQLUpdateCode(AFieldIndex: Integer): string; override;
+      function GetSQLUpdateCode(AFieldIndex, AID: Integer): string; override;
       procedure OnTitleClickEvent(Column: TColumn);
   end;
 
@@ -163,16 +164,28 @@ var
   i: integer;
 begin
   inherited Refresh();
-  with FForm.DBGrid.Columns do
-    for i := 0 to Count - 1 do begin
+  with FForm.DBGrid.Columns do begin
+    Items[0].Visible := False;
+    for i := 1 to Count - 1 do begin
       Items[i].Title.Caption := FTable.Fields[i].Caption;
       Items[i].Width := FTable.Fields[i].Width;
     end;
+  end;
 end;
 
 function TWithoutRefrenceTableManager.GetSQLCode(): string;
+var
+  i: integer;
 begin
-  Result := 'SELECT * FROM ' + FTable.Name;
+  Result := 'SELECT ';
+  with FTable do begin
+    for i := 0 to MaxIndex do begin
+      Result += Fields[i].Name;
+      if i <> MaxIndex then
+        Result += ', ';
+    end;
+    Result += ' FROM ' + Name;
+  end;
   Result += inherited GetSQLCode();
   If FOrderedField <> nil then begin
     Result += ' ORDER BY ' + FTable.Name + '.' + FOrderedField.Name;
@@ -194,7 +207,7 @@ begin
   Result := inherited GetSQLInsertCode();
   for i := 0 to High(FRedactorForm.FEdits) do begin
     e := FRedactorForm.FEdits[i] as TEdit;
-    case FTable.Fields[i].FieldType of
+    case FTable.Fields[i + 1].FieldType of
       sqlInteger: Result += e.Text;
       sqlFloat: Result += e.Text;
       sqlVarChar: Result += '''' + e.Text + '''';
@@ -205,19 +218,14 @@ begin
   Result += ');';
 end;
 
-function TWithoutRefrenceTableManager.GetSQLUpdateCode(AFieldIndex: Integer
+function TWithoutRefrenceTableManager.GetSQLUpdateCode(AFieldIndex, AID: Integer
   ): string;
 var
   i: integer;
 begin
-  Result := inherited GetSQLUpdateCode(AFieldIndex);
+  Result := inherited GetSQLUpdateCode(AFieldIndex, AID);
   Result += (FRedactorForm.FEdits[High(FRedactorForm.FEdits)] as TEdit).Text
-    + ' WHERE ' ;
-  for i := 0 to FTable.MaxIndex do begin
-    Result += FTable.Fields[i].Name + ' = ' + FRecord[i];
-    If i <> FTable.MaxIndex then
-      Result += ' AND ';
-  end;
+    + ' WHERE ' + FTable.IDField.Name + ' = ' + IntToStr(AID);
 end;
 
 procedure TWithoutRefrenceTableManager.OnTitleClickEvent(Column: TColumn);
@@ -258,12 +266,12 @@ end;
 procedure TFilter.OnFieldChange(Sender: TObject);
 begin
   with (Sender as TComboBox) do begin
-    FFIlterFieldIndex := ItemIndex;
+    FFIlterFieldIndex := ItemIndex + 1;
     if FTable is TTRefrenceTable then
-      FFIlterField := (FTable.Fields[ItemIndex] as TFIDRefrence).RefrenceTable.
-        Fields[1]
+      with (FTable.Fields[ItemIndex + 1] as TFIDRefrence).RefrenceTable do
+        FFIlterField := Fields[MaxIndex]
     else
-      FFIlterField := FTable.Fields[ItemIndex];
+      FFIlterField := FTable.Fields[ItemIndex + 1];
   end;
   FApplied := False;
   If FChangeEvent <> nil then
@@ -327,11 +335,11 @@ begin
     FieldBox := AddControl(TComboBox.Create(ASelf)) as TComboBox;
     with FieldBox do begin
       if FTable is TTRefrenceTable then
-        for i := 0 to FTable.MaxIndex do
+        for i := 1 to FTable.MaxIndex do
           Items.Add((FTable.Fields[i] as TFIDRefrence).RefrenceTable.
             Fields[1].Caption)
       else
-        for i := 0 to FTable.MaxIndex do
+        for i := 1 to FTable.MaxIndex do
           Items.Add(FTable.Fields[i].Caption);
       ItemIndex := 0;
       ReadOnly := True;
@@ -389,13 +397,14 @@ var
   i: integer;
 begin
   Inherited Refresh();
-  with FForm.DBGrid.Columns do
-    for i := 0 to Count - 1 do begin
-      Items[i].Title.Caption :=
-        (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Caption;
-      Items[i].Width :=
-        (FTable.Fields[i] as TFIDRefrence).RefrenceTable.Fields[1].Width;
-    end;
+  with FForm.DBGrid.Columns do begin
+    Items[0].Visible := False;
+    for i := 1 to Count - 1 do
+      with (FTable.Fields[i] as TFIDRefrence).RefrenceTable do begin
+        Items[i].Title.Caption := Fields[MaxIndex].Caption;
+        Items[i].Width := Fields[MaxIndex].Width;
+      end;
+  end;
 end;
 
 function TRefrenceTableManager.GetSQLCode(): string;
@@ -404,15 +413,17 @@ var
 begin
   Result := 'SELECT ';
   with FTable do begin
-    for i := 0 to MaxIndex do begin
-      Result += FRefrences[i].Name + '.' + FRefrences[i].Fields[1].Name;
+    Result += Name + '.' + IDField.Name + ', ';
+    for i := 1 to MaxIndex do begin
+      with FRefrences[i] do
+        Result += Name + '.' + Fields[MaxIndex].Name;
       if i <> MaxIndex then
         Result += ', ';
     end;
     Result += ' FROM ' + Name;
-    for i := 0 to High(FRefrences) do begin
+    for i := 1 to High(FRefrences) do begin
       Result += ' INNER JOIN ' + FRefrences[i].Name;
-      Result += ' ON ' + FRefrences[i].Name + '.' + FRefrences[i].Fields[0].Name +
+      Result += ' ON ' + FRefrences[i].Name + '.' + FRefrences[i].IDField.Name +
         ' = ' + Name + '.' + Fields[i].Name;
     end;
   end;
@@ -439,18 +450,16 @@ begin
   Result += ');';
 end;
 
-function TRefrenceTableManager.GetSQLUpdateCode(AFieldIndex: Integer): string;
+function TRefrenceTableManager.GetSQLUpdateCode(AFieldIndex, AID: Integer): string;
 var
   h: integer;
   c: TComboBox;
 begin
   h := High(FRedactorForm.FEdits);
-  Result := inherited GetSQLUpdateCode(AFieldIndex);
+  Result := inherited GetSQLUpdateCode(AFieldIndex, AID);
   c := (FRedactorForm.FEdits[h] as TComboBox);
   Result += FIDs[h, c.ItemIndex] +
-    ' WHERE ' + FTable.Fields[AFieldIndex].Name + ' = ' + GetSubSelectCode(
-    FRefrences[AFieldIndex], 1, FForm.DataSource.DataSet.
-    Fields.Fields[AFieldIndex].AsString);
+    ' WHERE ' + FTable.Name + '.' + FTable.IDField.Name + ' = ' + IntToStr(AID);
 end;
 
 function TRefrenceTableManager.GetSubSelectCode(ATable: TMyTable;
@@ -490,9 +499,11 @@ procedure TRefrenceTableManager.OnTitleClickEvent(Column: TColumn);
 begin
   FOrderedFieldPerentTable :=
     (FTable.Fields[Column.Index] as TFIDRefrence).RefrenceTable;
-  if FOrderedField = FOrderedFieldPerentTable.Fields[1] then
-    FDesc := not FDesc;
-  FOrderedField := FOrderedFieldPerentTable.Fields[1];
+  with FOrderedFieldPerentTable do begin
+    if FOrderedField = Fields[MaxIndex] then
+      FDesc := not FDesc;
+    FOrderedField := Fields[MaxIndex];
+  end;
   Refresh();
 end;
 
@@ -503,7 +514,7 @@ begin
   inherited Create(ATable);
   with ATable do begin
     SetLength(FRefrences, MaxIndex + 1);
-    for i := 0 to MaxIndex do
+    for i := 1 to MaxIndex do
       FRefrences[i] := (Fields[i] as TFIDRefrence).RefrenceTable;
   end;
 end;
@@ -528,9 +539,10 @@ var
   i, j: integer;
   f: TMyField;
 begin
+  RefreshPanel();
   with FRedactorForm do begin
     Caption := 'Редактор для ' + FTable.Caption;
-    for i := 0 to FTable.MaxIndex do begin
+    for i := 1 to FTable.MaxIndex do begin
       f := FTable.Fields[i];
       SetLength(FLables, Length(FLables) + 1);
       SetLength(FEdits, Length(FEdits) + 1);
@@ -545,7 +557,7 @@ begin
       end;
       FEdits[High(FEdits)] := Self.GetEditControl(f);
       with FEdits[High(FEdits)] do begin
-      Parent := FRedactorPanel;
+        Parent := FRedactorPanel;
         Width := EditWidth;
         Height := EditHight;
         Left := 2 * Indent + LableWidth;
@@ -574,10 +586,13 @@ begin
   //if FForm.DBGrid.SelectedRows.Count = 0 then exit;
   with FForm.DBGrid do begin
     SetLength(FRecord, DataSource.DataSet.Fields.Count);
+    FRow := DataSource.DataSet.Fields[0].AsInteger;
+    FColumn := FForm.DBGrid.SelectedColumn.Index;
     for i := 0 to High(FRecord) do
       FRecord[i] := DataSource.DataSet.Fields.Fields[i].AsString;
   end;
   RefreshPanel();
+  i := FForm.DBGrid.SelectedColumn.Index;
   with FRedactorForm do begin
     Caption := 'Редактор для ' + FTable.Caption;
       f := FTable.Fields[i];
@@ -679,6 +694,7 @@ var
   i: integer;
 begin
   if AIndex > High(FFilters) then exit;
+  FForm.ApplyButton.Enabled := True;
   FFilters[AIndex].Free();
   SetLength(FDeletedPanels, Length(FDeletedPanels) + 1);
   FDeletedPanels[High(FDeletedPanels)] := FForm.FPanels[AIndex];
@@ -744,7 +760,7 @@ var
 begin
   with FForm.SQLQuery do begin
     Close;
-    InsertSQL.Text := Self.GetSQLInsertCode();
+    SQL.Text := Self.GetSQLInsertCode();
     ExecSQL;
     TransactionComponent.Commit;
   end;
@@ -766,7 +782,7 @@ procedure TTableManager.OnUpdateEvent(Sender: TObject);
 begin
   with FForm.SQLQuery do begin
     Close;
-    SQL.Text := Self.GetSQLUpdateCode(1);
+    SQL.Text := Self.GetSQLUpdateCode(FColumn, FRow);
     ExecSQL;
     TransactionComponent.Commit;
   end;
@@ -805,10 +821,10 @@ end;
 
 function TTableManager.GetSQLInsertCode: string;
 begin
-  Result := 'INSERT INTO ' + FTable.Name + ' VALUES(';
+  Result := 'INSERT INTO ' + FTable.Name + ' VALUES( 0, ';
 end;
 
-function TTableManager.GetSQLUpdateCode(AFieldIndex: Integer): string;
+function TTableManager.GetSQLUpdateCode(AFieldIndex, AID: Integer): string;
 begin
   Result := 'UPDATE ' + FTable.Name + ' SET ' + FTable.Fields[AFieldIndex].Name +
     ' = ';

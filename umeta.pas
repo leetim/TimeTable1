@@ -42,16 +42,19 @@ type
       FCaption, FName: String;
       FFields: TMyFieldsArray;
       procedure AddField(AField: TMyField);
+      function GetFields(i: integer): TMyField;
       function GetMaxIndex(): integer;
       function GetWidth: integer; virtual;
+      function GetIDField(): TMyField;
       procedure Initializate(); virtual; abstract;
     public
       constructor Create();
       property Name: string read FName;
       property Caption: string read FCaption;
-      property Fields: TMyFieldsArray read FFields;
+      property Fields[i: integer]: TMyField read GetFields;
       property MaxIndex: integer read GetMaxIndex;
       property Width: integer read GetWidth;
+      property IDField: TMyField read GetIDField;
   end;
 
   TMyTableClass = class of TMyTable;
@@ -186,11 +189,6 @@ type
   TTRefrenceTable = class(TMyTable)
     private
       function GetWidth(): integer; override;
-    protected
-      FRefrences: TMyTableArray;
-      FRefrencesFields: TMyFieldsArray;
-    public
-      property Refrences: TMyTableArray read FRefrences;
   end;
 
   TTRefrenceTableClass = class of TTRefrenceTable;
@@ -269,10 +267,15 @@ implementation
 function TTRefrenceTable.GetWidth: integer;
 var
   f: TMyField;
+  i: integer;
 begin
   Result := 0;
-  for f in FFields do
-    Result += (f as TFIDRefrence).RefrenceTable.Fields[1].Width;
+  for i := 0 to MaxIndex do begin
+    f := Fields[i];
+    if f is TFIDRefrence then
+      with (f as TFIDRefrence).RefrenceTable do
+        Result += Fields[MaxIndex].Width;
+  end;
 end;
 
 { TFIDRefrence }
@@ -423,6 +426,7 @@ procedure TTSubjectsGroupsTable.Initializate;
 begin
   FName := 'GROUPS_SUBJECTS';
   FCaption := 'Соотношение группы-предметы';
+  AddField(TFID.Create());
   AddField(TFGroupID.Create());
   AddField(TFSubjectID.Create());
 end;
@@ -433,6 +437,7 @@ procedure TTSubjectsTeachersTable.Initializate;
 begin
   FName := 'TEACHERS_SUBJECTS';
   FCaption := 'Соотношение преподователи-предметы';
+  AddField(TFID.Create());
   AddField(TFTeacherID.Create());
   AddField(TFSubjectID.Create());
 end;
@@ -443,6 +448,7 @@ procedure TTLessonsTable.Initializate;
 begin
   FName := 'LESSONS';
   FCaption := 'Занятия';
+  AddField(TFID.Create());
   AddField(TFPairID.Create());
   AddField(TFWeekDayID.Create());
   AddField(TFGroupID.Create());
@@ -563,6 +569,11 @@ begin
   FFields[High(FFields)] := AField;
 end;
 
+function TMyTable.GetFields(i: integer): TMyField;
+begin
+  Result := FFields[i];
+end;
+
 function TMyTable.GetMaxIndex(): integer;
 begin
   Result := High(FFields);
@@ -575,6 +586,11 @@ begin
   Result := 0;
   for f in FFields do
     Result += f.Width;
+end;
+
+function TMyTable.GetIDField(): TMyField;
+begin
+  Result := FFields[0];
 end;
 
 constructor TMyTable.Create;
