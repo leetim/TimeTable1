@@ -1,10 +1,54 @@
 object RedactorForm: TRedactorForm
-  Left = 572
+  Left = 643
   Height = 452
-  Top = 241
+  Top = 237
   Width = 415
   BorderStyle = bsDialog
   Caption = 'RedactorForm'
+  ClientHeight = 452
+  ClientWidth = 415
   OnCreate = FormCreate
   LCLVersion = '1.2.4.0'
+  object Panel: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 5
+    Height = 442
+    Top = 5
+    Width = 405
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Around = 5
+    ClientHeight = 442
+    ClientWidth = 405
+    TabOrder = 0
+    object ActionButton: TButton
+      Left = 8
+      Height = 33
+      Top = 232
+      Width = 119
+      Caption = 'ActionButton'
+      TabOrder = 0
+    end
+    object CancelButton: TButton
+      Left = 136
+      Height = 33
+      Top = 232
+      Width = 119
+      Caption = 'Отмена'
+      OnClick = CancelButtonClick
+      TabOrder = 1
+    end
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <>
+    Database = ConnectionModule.ConnectionComponent
+    Transaction = TimeTableForm.SQLTransaction
+    Params = <>
+    left = 16
+    top = 408
+  end
 end

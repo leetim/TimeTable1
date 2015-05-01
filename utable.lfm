@@ -1,7 +1,7 @@
 object TableForm: TTableForm
-  Left = 350
+  Left = 568
   Height = 497
-  Top = 174
+  Top = 43
   Width = 671
   Caption = 'Запрос'
   ClientHeight = 497
@@ -37,7 +37,7 @@ object TableForm: TTableForm
     Left = 5
     Height = 61
     Top = 431
-    Width = 478
+    Width = 267
     Anchors = [akLeft, akBottom]
     BevelOuter = bvNone
     BorderSpacing.Left = 5
@@ -50,19 +50,20 @@ object TableForm: TTableForm
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 100
     ClientHeight = 61
-    ClientWidth = 478
+    ClientWidth = 267
     DataSource = DataSource
     OnClick = DBNavigatorClick
     Options = []
     TabOrder = 1
+    VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbCancel, nbRefresh]
   end
   object AddFilterButton: TButton
-    AnchorSideLeft.Control = DBNavigator
+    AnchorSideLeft.Control = CommitButton
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = FilterPanel
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Side = asrBottom
-    Left = 488
+    Left = 490
     Height = 25
     Top = 431
     Width = 169
@@ -72,12 +73,12 @@ object TableForm: TTableForm
     TabOrder = 2
   end
   object ApplyButton: TBitBtn
-    AnchorSideLeft.Control = DBNavigator
+    AnchorSideLeft.Control = CommitButton
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = AddFilterButton
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Side = asrBottom
-    Left = 488
+    Left = 490
     Height = 25
     Top = 461
     Width = 169
@@ -102,6 +103,63 @@ object TableForm: TTableForm
     BorderSpacing.Around = 5
     TabOrder = 4
   end
+  object InsertButton: TButton
+    AnchorSideLeft.Control = DBNavigator
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = DBNavigator
+    AnchorSideBottom.Control = DBNavigator
+    AnchorSideBottom.Side = asrBottom
+    Left = 277
+    Height = 61
+    Top = 431
+    Width = 52
+    Anchors = [akTop, akLeft, akBottom]
+    Caption = 'Insert'
+    TabOrder = 5
+  end
+  object EditButton: TButton
+    AnchorSideLeft.Control = InsertButton
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = DBNavigator
+    AnchorSideBottom.Control = DBNavigator
+    AnchorSideBottom.Side = asrBottom
+    Left = 329
+    Height = 61
+    Top = 431
+    Width = 52
+    Anchors = [akTop, akLeft, akBottom]
+    Caption = 'Edit'
+    TabOrder = 6
+  end
+  object DeleteButton: TButton
+    AnchorSideLeft.Control = EditButton
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = DBNavigator
+    AnchorSideBottom.Control = DBNavigator
+    AnchorSideBottom.Side = asrBottom
+    Left = 381
+    Height = 61
+    Top = 431
+    Width = 52
+    Anchors = [akTop, akLeft, akBottom]
+    Caption = 'Delete'
+    TabOrder = 7
+  end
+  object CommitButton: TButton
+    AnchorSideLeft.Control = DeleteButton
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = DBNavigator
+    AnchorSideBottom.Control = DBNavigator
+    AnchorSideBottom.Side = asrBottom
+    Left = 433
+    Height = 61
+    Top = 431
+    Width = 52
+    Anchors = [akTop, akLeft, akBottom]
+    Caption = 'Commit'
+    Enabled = False
+    TabOrder = 8
+  end
   object SQLQuery: TSQLQuery
     FieldDefs = <>
     Database = ConnectionModule.ConnectionComponent
@@ -115,6 +173,7 @@ object TableForm: TTableForm
     top = 560
   end
   object DataSource: TDataSource
+    AutoEdit = False
     DataSet = SQLQuery
     left = 496
     top = 552

@@ -20,11 +20,13 @@ type
     AboutItem: TMenuItem;
     CodeMemo: TSynMemo;
     LogsMemo: TMemo;
+    CommitItem: TMenuItem;
     TabelsItem: TMenuItem;
     SQLTransaction: TSQLTransaction;
     SynSQLSyn1: TSynSQLSyn;
     ExitItem: TMenuItem;
     procedure AboutItemClick(Sender: TObject);
+    procedure CommitItemClick(Sender: TObject);
     procedure ExcecuteStatementButtonClick(Sender: TObject);
     procedure ExitItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -84,6 +86,11 @@ end;
 procedure TTimeTableForm.AboutItemClick(Sender: TObject);
 begin
   ShowMessage('Батраков Артем Б8103а');
+end;
+
+procedure TTimeTableForm.CommitItemClick(Sender: TObject);
+begin
+  TransactionComponent.Commit;
 end;
 
 

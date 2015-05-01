@@ -1,7 +1,7 @@
 object TimeTableForm: TTimeTableForm
-  Left = 297
+  Left = 421
   Height = 458
-  Top = 66
+  Top = 189
   Width = 745
   Caption = 'Редактор расписания'
   ClientHeight = 438
@@ -554,6 +554,10 @@ object TimeTableForm: TTimeTableForm
     top = 288
     object FileItem: TMenuItem
       Caption = 'Файл'
+      object CommitItem: TMenuItem
+        Caption = 'Завершить транзакцию'
+        OnClick = CommitItemClick
+      end
       object ExitItem: TMenuItem
         Caption = 'Выход'
         OnClick = ExitItemClick
